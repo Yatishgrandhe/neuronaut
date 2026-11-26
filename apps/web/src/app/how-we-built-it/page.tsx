@@ -11,14 +11,14 @@ export const metadata: Metadata = {
 /** Who did what. `student: null` = the team must fill it in (TODO(team)). */
 const PARTS: { part: string; student: string | null; ai: string }[] = [
   { part: "Research and event rules", student: null, ai: "Claude Code ran research passes and drafted the plan." },
-  { part: "Lesson text and questions", student: null, ai: "Team to confirm." },
-  { part: "Learning engine (mastery, review, practice)", student: null, ai: "Written with Claude Code; the team reviewed and tested it." },
-  { part: "Word planet renderer (Rust/WebAssembly)", student: null, ai: "Team to confirm." },
+  { part: "Lesson text and questions", student: null, ai: "—" },
+  { part: "Learning engine (mastery, review, practice)", student: null, ai: "Written with Claude Code, with automated tests." },
+  { part: "Word planet renderer (Rust/WebAssembly)", student: null, ai: "—" },
   { part: "Site code and design", student: null, ai: "Built with Claude Code." },
   { part: "Design review", student: null, ai: "AI role-play (not real judges): Haiku agents acted as five reviewers." },
 ];
 
-const TESTS = 31;
+const TESTS = 39;
 
 export default function HowWeBuiltItPage() {
   const hasStudents = PARTS.some((p) => p.student);
@@ -115,11 +115,15 @@ export default function HowWeBuiltItPage() {
           {TESTS} automated tests on the engine (<code>pnpm --filter @neuronaut/core test</code>). They check the Bayes formula
           against numbers worked out by hand, and properties over thousands of random cases: estimates stay between 0 and 1, a
           right answer never lowers mastery, and more days never raise it. They also cover streak freezes, review timing,
-          importing damaged or old save files, and merging two saves.
+          importing damaged or old save files, merging two saves, and Ask Pip&rsquo;s lesson search. Each idea card&rsquo;s
+          title must find its own lesson, and real student questions such as &ldquo;why do chatbots make up fake
+          sources&rdquo; must reach the right one. That test caught a real gap: the search didn&rsquo;t know
+          &ldquo;sources&rdquo; and &ldquo;source&rdquo; were the same word, so we added stemming.
         </li>
         <li>
-          The tests found two real bugs, both now fixed. Merging two saves dropped the review queue. And when the first save
-          was the newer one, the merge ignored the other save completely. One known limit is still there: merging keeps the
+          The tests found three real merge bugs, all now fixed. Merging two saves dropped the review queue. When the first
+          save was the newer one, the merge ignored the other save completely. And merging an old save could bring back a
+          question you had already mastered, so mastered questions are now recorded. One known limit is still there: merging keeps the
           larger XP total rather than adding the two, because a save doesn&rsquo;t record which device earned what.
         </li>
         <li>

@@ -25,7 +25,9 @@ Production build:
 pnpm --filter web build && pnpm --filter web start
 ```
 
-Ask Pip needs `ANTHROPIC_API_KEY` in `apps/web/.env.local` (see `.env.example`). Everything else works without it.
+Ask Pip needs `ANTHROPIC_API_KEY` in `apps/web/.env.local` (see `.env.example`). Everything else works without it. Set a monthly spend limit on that key in the Anthropic Console.
+
+`/api/tutor` limits each visitor to 20 questions per 10 minutes and the whole site to 300 an hour per server instance. It identifies visitors by the `x-real-ip` header, which Vercel sets. On a host that doesn't set it, put the site behind a proxy that does, or the per-visitor limit can be dodged (the global cap still holds).
 
 ## Test it
 
@@ -33,7 +35,7 @@ Ask Pip needs `ANTHROPIC_API_KEY` in `apps/web/.env.local` (see `.env.example`).
 pnpm --filter @neuronaut/core test
 ```
 
-The engine has 31 tests. They cover the Bayes formula against hand-worked numbers, property checks over thousands of random cases, the review schedule, streak freezes, damaged and old save files, and merging two saves.
+The engine has 39 tests. They cover the Bayes formula against hand-worked numbers, the lesson search that grounds Ask Pip (it must find the right lesson for every idea card and for real student questions), property checks over thousands of random cases, the review schedule, streak freezes, damaged and old save files, and merging two saves.
 
 ## How it fits together
 

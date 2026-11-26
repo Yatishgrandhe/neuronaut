@@ -235,8 +235,8 @@
 .bars { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; height: 170px; }
 .bars li { display: grid; grid-template-rows: auto 1fr auto; justify-items: center; gap: 6px; }
 .bar-val { font-size: 13px; font-weight: 700; color: var(--ink-64); min-height: 1.2em; }
-.bar { align-self: end; width: 100%; max-width: 40px; min-height: 4px; border-radius: 8px; background: color-mix(in srgb, var(--ink) 22%, transparent); transform-origin: bottom; animation: bar-grow 800ms var(--ease-out) both; }
-.bar[data-today="true"] { background: var(--ink); }
+.bar { align-self: end; width: 100%; max-width: 40px; min-height: 4px; border-radius: 8px; background: color-mix(in srgb, var(--ink) 55%, transparent); transform-origin: bottom; animation: bar-grow 800ms var(--ease-out) both; }
+.bar[data-today="true"] { background: var(--accent); }
 .bar[data-future="true"] { background: transparent; box-shadow: inset 0 0 0 1px var(--line); }
 @keyframes bar-grow { from { transform: scaleY(0); } }
 .bar-day { font-size: 13px; font-weight: 600; color: var(--ink-64); }
@@ -513,3 +513,5 @@ ul.lesson-meta li + li { margin-left: 10px; padding-left: 10px; border-left: 1px
 }
 .skill-none { margin: 8px 0 0; padding: 12px 0; border-top: 1px solid var(--line); color: var(--ink-64); font-size: 15px; }
 .bars-cap { margin: 0 0 8px; }
+.fb-answer { font-weight: 700; color: var(--ink); }
+.runner-foot .link-btn { min-height: 44px; color: #b42318; }

@@ -67,6 +67,7 @@ export function createProgress(now: Date = new Date()): ProgressState {
     lessons: {},
     streak: { current: 0, longest: 0, lastActiveDay: null, freezes: 1 },
     review: {},
+    reviewDone: {},
     badges: {},
     history: {},
     weeklyGoal: 100,
@@ -102,6 +103,8 @@ export function parseProgress(raw: unknown): ProgressState {
   const review: ProgressState["review"] = {};
   for (const [k, v] of Object.entries(obj(r.review)))
     if (typeof v?.due === "string" && isDay(v.due)) review[k] = { key: k, box: Math.min(5, Math.max(1, num(v.box, 1))), due: v.due };
+  const reviewDone: ProgressState["reviewDone"] = {};
+  for (const [k, v] of Object.entries(obj(r.reviewDone))) if (typeof v === "string" && isDay(v) && !(k in review)) reviewDone[k] = v;
   const history: ProgressState["history"] = {};
   for (const [k, v] of Object.entries(obj(r.history))) if (isDay(k)) history[k] = num(v);
   const mastery: ProgressState["mastery"] = {};
@@ -122,6 +125,7 @@ export function parseProgress(raw: unknown): ProgressState {
       freezes: Math.min(MAX_FREEZES, Math.max(0, num(st.freezes, 1))),
     },
     review,
+    reviewDone,
     badges,
     history,
     weeklyGoal: num(r.weeklyGoal, base.weeklyGoal) || base.weeklyGoal,
@@ -187,8 +191,10 @@ function scheduleReview(s: ProgressState, key: string, correct: boolean, today: 
   const box = correct ? (prev?.box ?? 1) + 1 : 1;
   if (box > BOX_INTERVAL_DAYS.length) {
     delete s.review[key]; // mastered
+    s.reviewDone[key] = today;
     return;
   }
+  if (!correct) delete s.reviewDone[key]; // missed again after mastering: it's back in the queue
   const item: ReviewItem = { key, box, due: addDays(today, BOX_INTERVAL_DAYS[box - 1]) };
   s.review[key] = item;
 }
@@ -522,10 +528,15 @@ export function mergeProgress(a: ProgressState, b: ProgressState): ProgressState
   // Review: keep every item from both sides. If both have it, keep the more cautious copy
   // (lower box, then earlier due date), so a sync can never skip a question the learner missed.
   for (const [k, item] of Object.entries(other.review)) {
+    if (out.reviewDone[k]) continue; // the newer save mastered it: don't bring it back
     const mine = out.review[k];
     if (!mine || item.box < mine.box || (item.box === mine.box && item.due < mine.due)) out.review[k] = { ...item };
   }
   // Mastery: keep whichever side practised the lesson more recently.
+  for (const [k, day] of Object.entries(other.reviewDone)) {
+    if (out.review[k]) continue; // the newer save missed it again after the older one mastered it
+    if (!out.reviewDone[k] || day > out.reviewDone[k]) out.reviewDone[k] = day;
+  }
   for (const [id, p] of Object.entries(other.mastery)) {
     const theirs = other.masterySeen[id] ?? "";
     if (out.mastery[id] === undefined || theirs > (out.masterySeen[id] ?? "")) {

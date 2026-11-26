@@ -216,4 +216,12 @@ export const WORK_LOG: LogEntry[] = [
     minutes: null,
     ai: "AI-assisted (Claude Code); five AI role-play reviewers suggested the changes.",
   },
+  {
+    date: "2026-11-26",
+    task: "Review rounds 2-3, security and speed",
+    detail: "Fixed what three review rounds found. Practice now counts as review for due questions. Mastery has a 3-day grace before fading. The week chart and week total use the same Monday-to-Sunday window. A merge can no longer bring back a mastered question. A wrong answer marks the picked option, and \"Show me the answer\" appears after a second try. Ask Pip's lesson search moved into the tested engine and gained word stemming, after a test showed \"sources\" didn't match \"source\". Security: the Ask Pip rate limit no longer trusts a header the visitor can set, and a site-wide cap limits API cost. Engine tests: 39. Mobile LCP with 4x CPU slowdown and Slow 4G, after a smaller 720 px phone poster: 2.31 s and 2.46 s on two runs, under the 2.5 s goal (was 2.73 s).",
+    who: null,
+    minutes: null,
+    ai: "AI-assisted (Claude Code); measurements from Chrome DevTools.",
+  },
 ];

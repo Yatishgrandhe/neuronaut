@@ -46,6 +46,7 @@ export function Runner({
   const [verdict, setVerdict] = useState<"right" | "wrong" | null>(null);
   const [attempt, setAttempt] = useState(0);
   const [results, setResults] = useState<RunResult[]>([]);
+  const [revealed, setRevealed] = useState(false);
   const item = items[i];
   const onChange = useCallback((a: Answer | null) => setAnswer(a), []);
 
@@ -67,6 +68,7 @@ export function Runner({
     setAnswer(null);
     setVerdict(null);
     setAttempt(0);
+    setRevealed(false);
   };
 
   const retry = () => {
@@ -96,7 +98,7 @@ export function Runner({
         </span>
       </div>
 
-      <div className="runner-body wrap-narrow" key={`${item.key}-${attempt}`} data-verdict={verdict ?? undefined}>
+      <div className="runner-body wrap-narrow" key={`${item.key}-${attempt}`} data-verdict={revealed ? "revealed" : (verdict ?? undefined)}>
         <h1 className="runner-prompt">{exercisePrompt(item.exercise)}</h1>
         <ExerciseView exercise={item.exercise} seed={`${item.key}-${attempt}`} locked={verdict !== null} onChange={onChange} />
       </div>
@@ -120,11 +122,12 @@ export function Runner({
                 <CheckCircle2 className="fb-icon" aria-hidden />
                 <div>
                   <p className="fb-title">
-                    {PRAISE[(i + attempt) % PRAISE.length]}
-                    {xp && (attempt ? xp.retry : xp.first) > 0 ? (
+                    {revealed ? "Here's the answer" : PRAISE[(i + attempt) % PRAISE.length]}
+                    {!revealed && xp && (attempt ? xp.retry : xp.first) > 0 ? (
                       <span className="fb-xp num"> +{attempt ? xp.retry : xp.first} XP</span>
                     ) : null}
                   </p>
+                  {revealed ? <p className="fb-explain fb-answer">{answerText(item.exercise)}</p> : null}
                   <p className="fb-explain">{item.exercise.explain}</p>
                 </div>
               </div>
@@ -140,6 +143,20 @@ export function Runner({
                 <div>
                   <p className="fb-title">Not quite. Have another go.</p>
                   <p className="fb-explain">Hint: {hint(item.exercise)}</p>
+                  {attempt >= 1 ? (
+                    <button
+                      type="button"
+                      className="link-btn"
+                      onClick={() => {
+                        // Counts as a second-try answer, so it comes back in Review.
+                        setAttempt(attempt + 1);
+                        setRevealed(true);
+                        setVerdict("right");
+                      }}
+                    >
+                      Show me the answer
+                    </button>
+                  ) : null}
                 </div>
               </div>
               <button type="button" className="btn btn-lg runner-cta btn-wrong" onClick={retry} autoFocus>
@@ -152,6 +169,20 @@ export function Runner({
 
     </div>
   );
+}
+
+/** The right answer in words, for "Show me the answer". */
+function answerText(ex: Exercise): string {
+  switch (ex.kind) {
+    case "choice":
+      return `Answer: ${ex.options[ex.answer]}`;
+    case "truefalse":
+      return `Answer: ${ex.answer ? "True" : "False"}`;
+    case "order":
+      return `Answer: ${ex.answer.map((k) => ex.tiles[k]).join(" → ")}`;
+    case "match":
+      return `Answer: ${ex.pairs.map(([a, b]) => `${a} = ${b}`).join("; ")}`;
+  }
 }
 
 /** A nudge that doesn't give the answer away. */

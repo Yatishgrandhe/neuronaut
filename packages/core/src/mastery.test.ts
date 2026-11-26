@@ -224,3 +224,26 @@ test("a lesson aced weeks ago drops out of Mastered and back into practice", () 
   assert.ok(masteryOf(s, l.id, "2026-11-29") < MASTERED);
   assert.ok(practiceQueue(s, "2026-11-29").length > 0);
 });
+
+test("merge never brings back a question the newer save mastered (regression)", () => {
+  const key = `${allLessons[0].id}:${allLessons[0].exercises[0].id}`;
+  const older = { ...createProgress(), review: { [key]: { key, box: 4, due: "2026-11-27" } }, updatedAt: "2026-11-20T00:00:00Z" };
+  const newer = { ...createProgress(), reviewDone: { [key]: "2026-11-26" }, updatedAt: "2026-11-26T00:00:00Z" };
+  assert.equal(mergeProgress(older, newer).review[key], undefined);
+  assert.equal(mergeProgress(newer, older).review[key], undefined, "argument order doesn't matter");
+  // But a question missed again on the newer device after the older one mastered it stays.
+  const reMissed = { ...createProgress(), review: { [key]: { key, box: 1, due: "2026-11-26" } }, updatedAt: "2026-11-26T00:00:00Z" };
+  const oldDone = { ...createProgress(), reviewDone: { [key]: "2026-11-20" }, updatedAt: "2026-11-20T00:00:00Z" };
+  assert.ok(mergeProgress(reMissed, oldDone).review[key]);
+});
+
+test("mastering a review question records it; missing it again clears the record", () => {
+  const l = allLessons[0];
+  const key = `${l.id}:${l.exercises[0].id}`;
+  let s = completeLesson(createProgress(), l, l.exercises.map((e, i) => ({ exerciseId: e.id, correct: true, retried: i === 0 })), d("2026-11-01")).state;
+  for (const day of ["2026-11-01", "2026-11-02", "2026-11-05", "2026-11-12", "2026-11-28"]) s = completeReview(s, [{ key, correct: true }], d(day)).state;
+  assert.equal(s.reviewDone[key], "2026-11-28");
+  s = completeLesson(s, l, l.exercises.map((e, i) => ({ exerciseId: e.id, correct: true, retried: i === 0 })), d("2026-11-29")).state;
+  assert.ok(s.review[key]);
+  assert.equal(s.reviewDone[key], undefined);
+});

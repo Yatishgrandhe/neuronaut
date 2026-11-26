@@ -23,7 +23,7 @@ const lessonLength = minMin === maxMin ? `${minMin}-minute` : `${minMin}–${max
 
 export default function Home() {
   // The planet still is the LCP element: ask for it with the HTML, before CSS and scripts.
-  preload("/hero/word-planet-900.webp", { as: "image", type: "image/webp", fetchPriority: "high", media: "(max-width: 767px)" });
+  preload("/hero/word-planet-720.webp", { as: "image", type: "image/webp", fetchPriority: "high", media: "(max-width: 767px)" });
   preload("/hero/word-planet-1700.webp", {
     as: "image",
     type: "image/webp",

@@ -147,6 +147,7 @@ export function Dashboard() {
         {week === 0 ? (
           <p className="week-empty">No XP yet this week. One lesson earns about 75 XP, so the goal is two lessons away.</p>
         ) : null}
+        {week === 0 ? null : <p className="week-empty">XP earned each day, Monday to Sunday. Today is in orange.</p>}
         {week === 0 ? null : (
         <ol className="bars" aria-label="XP earned each day this week">
           {days.map((d) => {
@@ -174,7 +175,12 @@ export function Dashboard() {
           Each lesson is one skill. The estimate rises with first-try answers, falls with misses, and fades if you haven&rsquo;t
           practised it for a while.
         </p>
-        {modules.map((m) => {
+        {Object.keys(state.mastery).length === 0 ? (
+          <p className="skill-none">
+            Nothing to show yet. Finish your first lesson and its skill appears here, with how sure we are that you know it.
+          </p>
+        ) : null}
+        {Object.keys(state.mastery).length === 0 ? null : modules.map((m) => {
           const p = moduleProgress(state, m.id);
           return (
             <div key={m.id} className="skill-mod">

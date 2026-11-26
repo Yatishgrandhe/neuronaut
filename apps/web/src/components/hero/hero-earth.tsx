@@ -84,7 +84,7 @@ export function HeroEarth() {
       <picture className="he-still">
         {/* Phones always get the 900px still (95 KB): on a 3x screen the srcset would otherwise pick the
             226 KB 1700px file, which made it the slowest thing on the page (LCP 5.5 s on slow 4G). */}
-        <source type="image/webp" media="(max-width: 767px)" srcSet="/hero/word-planet-900.webp" />
+        <source type="image/webp" media="(max-width: 767px)" srcSet="/hero/word-planet-720.webp" />
         <source type="image/webp" srcSet="/hero/word-planet-1300.webp 1300w, /hero/word-planet-1700.webp 1700w" sizes="1700px" />
         <img src="/hero/word-planet-1300.webp" alt="" width={1700} height={1276} decoding="async" fetchPriority="high" />
       </picture>

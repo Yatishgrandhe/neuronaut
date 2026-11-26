@@ -19,8 +19,8 @@
  * Classic BKT assumes nothing is ever forgotten. We add a forgetting curve: after a grace
  * period of GRACE_DAYS with no practice, the stored estimate decays toward the starting value
  * with a half-life of HALF_LIFE_DAYS. The grace period matches the review schedule's early gaps
- * (1 and 3 days), so a skill mastered today is still "Mastered" tomorrow. So a lesson aced three weeks ago is no longer "Mastered" and shows up in
- * Practice again, which is the point of spacing. All functions are pure.
+ * (1 and 3 days), so a skill mastered today is still "Mastered" tomorrow, while a lesson aced
+ * three weeks ago is not and comes back in Practice. All functions are pure.
  */
 import type { Exercise } from "./types.ts";
 

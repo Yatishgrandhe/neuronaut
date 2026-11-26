@@ -7,7 +7,7 @@ import { StringOutputParser } from "@langchain/core/output_parsers";
 import { ChatPromptTemplate, MessagesPlaceholder } from "@langchain/core/prompts";
 import { BaseRetriever } from "@langchain/core/retrievers";
 import { RunnableSequence } from "@langchain/core/runnables";
-import { allLessons, getLesson, modules } from "@neuronaut/core";
+import { getLesson, searchLessons } from "@neuronaut/core";
 
 /** Default model per Anthropic's current guidance. */
 export const TUTOR_MODEL = "claude-opus-5-5";
@@ -20,58 +20,16 @@ export function tutorConfigured(): boolean {
 /* Knowledge base: our own lesson content as LangChain Documents.      */
 /* ------------------------------------------------------------------ */
 
-const docs: Document[] = allLessons.flatMap((lesson) => {
-  const mod = modules.find((m) => m.id === lesson.moduleId)!;
-  const meta = { lessonId: lesson.id, lesson: lesson.title, module: mod.title };
-  return [
-    ...lesson.cards.map(
-      (c) => new Document({ pageContent: `${c.title}. ${c.body}`, metadata: { ...meta, kind: "idea" } }),
-    ),
-    ...lesson.exercises.map(
-      (e) =>
-        new Document({
-          pageContent: `${e.kind === "truefalse" ? e.statement : e.prompt} ${e.explain}`,
-          metadata: { ...meta, kind: "practice" },
-        }),
-    ),
-  ];
-});
-
-const STOP = new Set("a an and are as at be but by can do for from how i in is it its me my of on or so that the this to was what when which who why will with you your".split(" "));
-const tokenize = (s: string) =>
-  s.toLowerCase().replace(/[^a-z0-9\s]/g, " ").split(/\s+/).filter((w) => w.length > 2 && !STOP.has(w));
-
-const docTokens = docs.map((d) => tokenize(d.pageContent));
-const df = new Map<string, number>();
-for (const toks of docTokens) for (const t of new Set(toks)) df.set(t, (df.get(t) ?? 0) + 1);
-const avgLen = docTokens.reduce((n, t) => n + t.length, 0) / docTokens.length;
-
-/** BM25 retriever over the curriculum: no embeddings service, fully local. */
+/** Ask Pip's retriever: the tested BM25 lesson search from @neuronaut/core, as LangChain Documents. */
 class CurriculumRetriever extends BaseRetriever {
   lc_namespace = ["neuronaut", "retrievers"];
   constructor(private k = 4, private boostLesson?: string) {
     super();
   }
   async _getRelevantDocuments(query: string): Promise<Document[]> {
-    const q = tokenize(query);
-    const N = docs.length;
-    const scored = docs.map((d, i) => {
-      const toks = docTokens[i];
-      let score = 0;
-      for (const term of q) {
-        const tf = toks.filter((t) => t === term).length;
-        if (!tf) continue;
-        const idf = Math.log(1 + (N - (df.get(term) ?? 0) + 0.5) / ((df.get(term) ?? 0) + 0.5));
-        score += (idf * tf * 2.2) / (tf + 1.2 * (0.25 + 0.75 * (toks.length / avgLen)));
-      }
-      if (this.boostLesson && d.metadata.lessonId === this.boostLesson) score += 1.5;
-      return { d, score };
-    });
-    return scored
-      .filter((s) => s.score > 0)
-      .sort((a, b) => b.score - a.score)
-      .slice(0, this.k)
-      .map((s) => s.d);
+    return searchLessons(query, this.k, this.boostLesson).map(
+      (p) => new Document({ pageContent: p.text, metadata: { lessonId: p.lessonId, lesson: p.lesson, module: p.module, kind: p.kind } }),
+    );
   }
 }
 

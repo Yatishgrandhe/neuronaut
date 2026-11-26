@@ -13,6 +13,8 @@ export function rateLimit(key: string, limit: number, windowMs: number): boolean
   const now = Date.now();
   const list = (hits.get(key) ?? []).filter((t) => now - t < windowMs);
   if (list.length >= limit) {
+    // Refresh its place too, so a limited key can't be pushed out by eviction to reset its window.
+    hits.delete(key);
     hits.set(key, list);
     return false;
   }

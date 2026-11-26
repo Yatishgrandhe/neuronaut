@@ -97,6 +97,9 @@ export interface ProgressState {
     freezes: number;
   };
   review: Record<string, ReviewItem>;
+  /** Review items answered right five times in a row: key → day mastered. Lets a merge tell
+   *  "mastered and removed" apart from "never missed on this device". */
+  reviewDone: Record<string, string>;
   badges: Record<string, string>;
   /** XP earned per local day, `YYYY-MM-DD` → xp. Trimmed to the last 60 days. */
   history: Record<string, number>;

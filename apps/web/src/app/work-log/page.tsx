@@ -24,7 +24,7 @@ export default function WorkLogPage() {
         </p>
         {!hasWho || !hasTime ? (
           <p className="doc-note">
-            <strong>Before submission:</strong> the team adds who did each task and how long it took. Those columns appear
+            <strong>Before submission:</strong> the team adds who did each task and how long it took, and confirms AI use where a row shows a dash. The columns appear
             here automatically once they are filled in.
           </p>
         ) : null}
@@ -57,7 +57,7 @@ export default function WorkLogPage() {
                 <td data-label="What">{e.detail}</td>
                 {hasWho ? <td data-label="Who">{e.who ?? <span className="doc-gap">{TEAM_GAP}</span>}</td> : null}
                 {hasTime ? <td data-label="Time">{e.minutes != null ? `${e.minutes} min` : <span className="doc-gap">{TEAM_GAP}</span>}</td> : null}
-                <td data-label="AI use">{e.ai ?? <span className="doc-gap">Team to confirm</span>}</td>
+                <td data-label="AI use">{e.ai ?? <span aria-label="Not recorded yet">—</span>}</td>
               </tr>
             ))}
           </tbody>

@@ -80,7 +80,8 @@ export function Header() {
 
   if (path.startsWith("/lesson/")) return null; // focused lesson mode
   const next = (ready ? nextLesson(state) : undefined) ?? allLessons[0];
-  const showStart = path !== "/" || heroCtaGone;
+  // One primary action per screen: the dashboard's "Next" card already says what to do.
+  const showStart = path === "/dashboard" ? false : path !== "/" || heroCtaGone;
 
   return (
     <>
