@@ -4,6 +4,7 @@ Short lessons for high schoolers on how AI works, how to use it well, and how to
 
 - **Webmaster entry (TSA 2026-27):** an AI learning portal with 3 modules (How AI Works, Using AI Well, AI Ethics & Integrity), 12 lessons, 60 questions, XP, levels, streaks, badges and a progress dashboard. The copyright checklist and work log are linked from every page.
 - **Software Development entry (TSA 2026-27):** software that improves how people learn. Lessons teach an idea; a mastery model, adaptive practice and spaced review bring it back until it sticks. See `docs/software-development/`.
+- **Code:** https://github.com/Yatishgrandhe/neuronaut
 
 > Before entering both events with one project, the advisor must confirm with the event coordinator that this is allowed under the 2026-27 general rules.
 
