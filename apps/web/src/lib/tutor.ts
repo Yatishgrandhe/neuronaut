@@ -9,8 +9,8 @@ import { BaseRetriever } from "@langchain/core/retrievers";
 import { RunnableSequence } from "@langchain/core/runnables";
 import { getLesson, searchLessons } from "@neuronaut/core";
 
-/** Default model per Anthropic's current guidance. */
-export const TUTOR_MODEL = "claude-opus-5-5";
+/** Claude Haiku 5.5: fast and low-cost, enough for short tutoring answers grounded in our lessons. */
+export const TUTOR_MODEL = "claude-haiku-5-5";
 
 export function tutorConfigured(): boolean {
   return Boolean(process.env.ANTHROPIC_API_KEY);
@@ -47,9 +47,6 @@ function model(opts: { maxTokens: number; effort: "low" | "medium" }) {
     model: TUTOR_MODEL,
     maxTokens: opts.maxTokens,
     outputConfig: { effort: opts.effort },
-    // If a safety classifier declines, the API re-runs the request on a suitable model.
-    betas: ["server-side-fallback-2026-07-01"],
-    invocationKwargs: { fallbacks: "default" },
     maxRetries: 2,
   });
 }
@@ -97,7 +94,3 @@ export async function tutorStream(input: { question: string; history: ChatTurn[]
   const stream = await chain.stream({ question: input.question, history, context: formatDocs(found) });
   return { stream, lessons };
 }
-
-/* ------------------------------------------------------------------ */
-/* Practice generator: structured output (native JSON schema mode)     */
-/* ------------------------------------------------------------------ */

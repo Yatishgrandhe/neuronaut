@@ -2,20 +2,21 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { ArrowLeft, ArrowRight, Flame, Lock, Snowflake, Target, Zap } from "lucide-react";
+import { ArrowLeft, ArrowRight, Clock, Flame, Lock, Snowflake, Target, Zap } from "lucide-react";
 import {
   completeLesson,
   getLesson,
   getModule,
   isLessonUnlocked,
   levelProgress,
+  nextLesson,
   XP,
   type ProgressEvent,
 } from "@neuronaut/core";
 import { Pip } from "./brand";
 import { BadgeGlyph } from "./badge";
 import { useProgress } from "./progress";
-import { Runner, type RunResult } from "./runner";
+import { Runner, type RunMeta, type RunResult } from "./runner";
 
 type Phase = "cards" | "quiz" | "done";
 
@@ -25,7 +26,7 @@ export function LessonPlayer({ lessonId }: { lessonId: string }) {
   const { state, setState, ready } = useProgress();
   const [phase, setPhase] = useState<Phase>("cards");
   const [card, setCard] = useState(0);
-  const [outcome, setOutcome] = useState<{ events: ProgressEvent[]; accuracy: number } | null>(null);
+  const [outcome, setOutcome] = useState<{ events: ProgressEvent[]; accuracy: number; meta: RunMeta; next?: { id: string; title: string } } | null>(null);
 
   if (ready && !isLessonUnlocked(state, lessonId) && phase !== "done") {
     return (
@@ -40,14 +41,15 @@ export function LessonPlayer({ lessonId }: { lessonId: string }) {
     );
   }
 
-  const finish = (results: RunResult[]) => {
+  const finish = (results: RunResult[], meta: RunMeta) => {
     const r = completeLesson(
       state,
       lesson,
       results.map((x) => ({ exerciseId: x.key.split(":")[1], correct: x.correct, retried: x.retried })),
     );
     setState(r.state);
-    setOutcome({ events: r.events, accuracy: r.accuracy });
+    const n = nextLesson(r.state);
+    setOutcome({ events: r.events, accuracy: r.accuracy, meta, next: n ? { id: n.id, title: n.title } : undefined });
     setPhase("done");
   };
 
@@ -108,6 +110,8 @@ export function LessonPlayer({ lessonId }: { lessonId: string }) {
   const levelUp = events.find((e) => e.type === "level");
   const lp = levelProgress(state.xp);
   const pct = Math.round((outcome?.accuracy ?? 0) * 100);
+  const secs = Math.round((outcome?.meta.ms ?? 0) / 1000);
+  const time = `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, "0")}`;
 
   return (
     <div className="done-screen">
@@ -134,13 +138,20 @@ export function LessonPlayer({ lessonId }: { lessonId: string }) {
             </dt>
             <dd className="num">{pct}%</dd>
           </div>
-          <div className="stat stat-streak">
+          <div className="stat stat-time">
             <dt>
-              {streakEv?.type === "streak" && streakEv.usedFreeze ? <Snowflake aria-hidden size={18} /> : <Flame aria-hidden size={18} />} Streak
+              <Clock aria-hidden size={18} /> Time
             </dt>
-            <dd className="num">{state.streak.current} {state.streak.current === 1 ? "day" : "days"}</dd>
+            <dd className="num">{time}</dd>
           </div>
         </dl>
+        <p className="done-streak">
+          {streakEv?.type === "streak" && streakEv.usedFreeze ? <Snowflake aria-hidden size={20} /> : <Flame aria-hidden size={20} />}
+          <span className="num">
+            {state.streak.current}-day streak
+          </span>
+          {(outcome?.meta.bestCombo ?? 0) >= 3 ? <span className="done-combo num">Best run: {outcome?.meta.bestCombo} in a row</span> : null}
+        </p>
         {streakEv?.type === "streak" && streakEv.usedFreeze && (
           <p className="done-note">A streak freeze covered the day you missed. No stress.</p>
         )}
@@ -171,8 +182,13 @@ export function LessonPlayer({ lessonId }: { lessonId: string }) {
         )}
 
         <div className="done-actions">
-          <Link className="btn btn-spark btn-lg btn-block" href="/learn">
-            Continue <ArrowRight size={20} aria-hidden />
+          {outcome?.next && outcome.next.id !== lesson.id ? (
+            <Link className="btn btn-spark btn-lg btn-block" href={`/lesson/${outcome.next.id}`}>
+              Next: {outcome.next.title} <ArrowRight size={20} aria-hidden />
+            </Link>
+          ) : null}
+          <Link className={`btn btn-lg btn-block ${outcome?.next && outcome.next.id !== lesson.id ? "btn-ghost" : "btn-spark"}`} href="/learn">
+            Back to the path
           </Link>
           {pct < 100 && (
             <Link className="btn btn-ghost btn-lg btn-block" href="/review">

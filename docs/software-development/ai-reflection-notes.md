@@ -5,7 +5,7 @@
 ## AI tools used (facts from the work log)
 - Claude Code (AI coding assistant): research passes on the event rules, the site code, the learning engine and its tests, and this documentation.
 - Haiku agents: role-played five reviewers (two judges, a student, a teacher and a design critic) to critique the site. They are AI role-play, not real people.
-- Ask Pip in the product uses Claude (Anthropic) to answer students' questions from our lessons.
+- Ask Pip in the product uses Claude Haiku 5.5 (Anthropic) to answer students' questions from our lessons.
 
 ## Questions your reflection should answer honestly
 - Which parts did each team member write, rewrite or check by hand?

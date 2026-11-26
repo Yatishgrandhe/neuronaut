@@ -11,18 +11,21 @@ export function ExerciseView({
   exercise,
   seed,
   locked,
+  reveal = false,
   onChange,
 }: {
   exercise: Exercise;
   seed: string;
   locked: boolean;
+  /** After a miss: mark the correct option in place. */
+  reveal?: boolean;
   onChange: (a: Answer | null) => void;
 }) {
   switch (exercise.kind) {
     case "choice":
-      return <Choice ex={exercise} locked={locked} onChange={onChange} seed={seed} />;
+      return <Choice ex={exercise} locked={locked} reveal={reveal} onChange={onChange} seed={seed} />;
     case "truefalse":
-      return <TrueFalse ex={exercise} locked={locked} onChange={onChange} />;
+      return <TrueFalse ex={exercise} locked={locked} reveal={reveal} onChange={onChange} />;
     case "order":
       return <Order ex={exercise} locked={locked} onChange={onChange} seed={seed} />;
     case "match":
@@ -36,7 +39,7 @@ export function exercisePrompt(ex: Exercise): string {
 
 /* ------------------------------ choice ------------------------------ */
 
-function Choice({ ex, locked, onChange, seed }: { ex: Extract<Exercise, { kind: "choice" }>; locked: boolean; onChange: (a: Answer | null) => void; seed: string }) {
+function Choice({ ex, locked, reveal, onChange, seed }: { ex: Extract<Exercise, { kind: "choice" }>; locked: boolean; reveal: boolean; onChange: (a: Answer | null) => void; seed: string }) {
   const order = useMemo(() => seededShuffle(ex.options.map((_, i) => i), seed), [ex, seed]);
   const [picked, setPicked] = useState<number | null>(null);
 
@@ -64,6 +67,7 @@ function Choice({ ex, locked, onChange, seed }: { ex: Extract<Exercise, { kind: 
             role="radio"
             aria-checked={picked === i}
             className="option"
+            data-correct={reveal && i === ex.answer ? true : undefined}
             disabled={locked}
             onClick={() => {
               setPicked(i);
@@ -81,8 +85,21 @@ function Choice({ ex, locked, onChange, seed }: { ex: Extract<Exercise, { kind: 
 
 /* ---------------------------- true / false --------------------------- */
 
-function TrueFalse({ ex, locked, onChange }: { ex: Extract<Exercise, { kind: "truefalse" }>; locked: boolean; onChange: (a: Answer | null) => void }) {
+function TrueFalse({ ex, locked, reveal, onChange }: { ex: Extract<Exercise, { kind: "truefalse" }>; locked: boolean; reveal: boolean; onChange: (a: Answer | null) => void }) {
   const [picked, setPicked] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (locked || e.target instanceof HTMLInputElement) return;
+      const v = e.key === "1" || e.key.toLowerCase() === "t" ? true : e.key === "2" || e.key.toLowerCase() === "f" ? false : null;
+      if (v === null) return;
+      setPicked(v);
+      onChange({ kind: "truefalse", value: v });
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [locked, onChange]);
+
   return (
     <>
       <p className="statement">{ex.statement}</p>
@@ -94,13 +111,15 @@ function TrueFalse({ ex, locked, onChange }: { ex: Extract<Exercise, { kind: "tr
             role="radio"
             aria-checked={picked === v}
             className="option tf-option"
+            data-correct={reveal && v === ex.answer ? true : undefined}
             disabled={locked}
             onClick={() => {
               setPicked(v);
               onChange({ kind: "truefalse", value: v });
             }}
           >
-            {v ? "True" : "False"}
+            <kbd className="option-key num">{v ? 1 : 2}</kbd>
+            <span>{v ? "True" : "False"}</span>
           </button>
         ))}
       </div>

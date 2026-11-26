@@ -6,3 +6,4 @@ export * from "./photos.ts";
 export * from "./mastery.ts";
 export * from "./sample.ts";
 export * from "./search.ts";
+export * from "./study.ts";

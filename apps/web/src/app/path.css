@@ -1,0 +1,114 @@
+/* Learning path: one winding trail of lesson nodes per unit, with a side panel for the day.
+   Pattern from learning apps (one obvious next step, review on the path, a daily goal);
+   colours and type stay Neuronaut's: paper, ink and one orange accent. */
+
+.learn-layout { display: grid; gap: 32px; align-items: start; }
+@media (min-width: 1000px) {
+  .learn-layout { grid-template-columns: minmax(0, 1fr) 320px; gap: 48px; }
+  .rail { position: sticky; top: calc(var(--nav-h) + 24px); }
+}
+@media (max-width: 999px) { .rail { order: -1; } }
+
+.trail, .trail-nodes { list-style: none; margin: 0; padding: 0; }
+.trail { display: grid; gap: 40px; }
+
+.unit-card {
+  display: flex; justify-content: space-between; align-items: flex-end; gap: 16px 24px; flex-wrap: wrap;
+  padding: 22px 24px; border-radius: var(--r-card); background: var(--ink); color: var(--paper);
+}
+.unit-card h2 { color: var(--paper); font-size: clamp(24px, 2.6vw, 30px); letter-spacing: -0.012em; }
+.unit-n { margin: 0 0 2px; font: 600 14px var(--font-ui); color: color-mix(in srgb, var(--paper) 72%, transparent); }
+.unit-tag { margin: 2px 0 0; color: color-mix(in srgb, var(--paper) 78%, transparent); }
+.unit-side { display: flex; align-items: center; gap: 14px; }
+.unit-count { font: 700 16px var(--font-ui); }
+.unit-guide {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 16px; border-radius: 999px;
+  color: var(--paper); font: 600 15px var(--font-ui); box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--paper) 40%, transparent);
+}
+.unit-guide:hover { text-decoration: none; background: color-mix(in srgb, var(--paper) 12%, transparent); }
+.unit-guide:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+.trail-nodes { display: grid; justify-items: center; gap: 22px; padding: 36px 0 8px; }
+.trail-step {
+  --step: 64px;
+  position: relative; display: grid; justify-items: center; gap: 8px; width: 220px;
+  translate: calc(var(--x) * var(--step)) 0;
+}
+.trail-node {
+  display: grid; place-items: center; width: 72px; height: 72px; border-radius: 50%;
+  color: var(--paper); background: var(--accent);
+  box-shadow: 0 6px 0 var(--accent-ink);
+  transition: transform 120ms var(--ease), box-shadow 120ms var(--ease);
+}
+.trail-node svg { width: 30px; height: 30px; }
+a.trail-node:hover { text-decoration: none; transform: translateY(-2px); }
+a.trail-node:active { transform: translateY(5px); box-shadow: 0 1px 0 var(--accent-ink); }
+a.trail-node:focus-visible { outline: 3px solid var(--ink); outline-offset: 6px; }
+/* Done: a green node inside a ring that fills with mastery (after forgetting). */
+.trail-node[data-status="done"] {
+  background:
+    radial-gradient(closest-side, var(--leaf) 83%, var(--paper) 84% 88%, transparent 89%),
+    conic-gradient(var(--leaf-ink) var(--m, 0%), var(--fill) 0);
+  box-shadow: none;
+}
+a.trail-node[data-status="done"]:active { transform: translateY(2px); }
+.trail-node[data-status="locked"] { background: var(--paper-2); color: var(--ink-3); box-shadow: 0 6px 0 var(--line); }
+.trail-node[data-status="check"] { background: var(--ink); box-shadow: 0 6px 0 var(--ink-3); border-radius: 22px; }
+.trail-check .trail-node[data-status="locked"] { border-radius: 22px; }
+.trail-step[data-current] .trail-node { width: 84px; height: 84px; }
+.trail-label { display: grid; justify-items: center; gap: 2px; text-align: center; }
+.trail-title { font-weight: 600; font-size: 15px; line-height: 1.25; max-width: 20ch; }
+.trail-level { font: 600 13px var(--font-ui); color: var(--leaf-ink); }
+.trail-start {
+  position: absolute; bottom: calc(100% - 2px); left: 50%; translate: -50% 0;
+  padding: 6px 14px; border-radius: 12px; background: var(--paper); color: var(--accent-ink);
+  font: 700 15px var(--font-ui); box-shadow: var(--sh-2), inset 0 0 0 2px var(--accent);
+  animation: trail-bob 1.6s var(--ease) infinite alternate;
+}
+.trail-start::after {
+  content: ""; position: absolute; top: 100%; left: 50%; translate: -50% 0;
+  border: 7px solid transparent; border-top-color: var(--accent);
+}
+.trail-step[data-current] { margin-top: 30px; }
+@keyframes trail-bob { to { transform: translateY(-5px); } }
+@media (prefers-reduced-motion: reduce) {
+  .trail-start { animation: none; }
+  a.trail-node, a.trail-node:hover { transition: none; transform: none; }
+}
+@media (max-width: 560px) {
+  .trail-step { --step: 40px; width: 190px; }
+  .unit-card { padding: 18px; }
+}
+
+/* Side panel */
+.rail { display: grid; gap: 16px; }
+.rail-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0; }
+.rail-stats > div, .rail-card { padding: 16px 18px; border-radius: var(--r-card); background: var(--paper-2); }
+.rail-stats dt { display: flex; align-items: center; gap: 6px; font: 600 14px var(--font-ui); color: var(--ink-64); }
+.rail-stats dt svg { color: var(--accent); }
+.rail-stats dd { margin: 4px 0 0; font: 700 22px var(--font-display); }
+.rail-sub { display: block; font: 500 13px var(--font-ui); color: var(--ink-64); }
+.rail-stats .rail-sub { display: inline; margin-left: 4px; }
+.rail-card h2 { font-size: 19px; letter-spacing: -0.01em; }
+.goal-row { display: flex; align-items: center; gap: 14px; }
+.goal-row p { margin: 2px 0 0; color: var(--ink-64); font-size: 15px; }
+.goal-ring { flex: none; width: 64px; height: 64px; rotate: -90deg; }
+.goal-ring circle { fill: none; stroke-width: 9; }
+.goal-track { stroke: var(--fill); }
+.goal-fill { stroke: var(--accent); stroke-linecap: round; transition: stroke-dashoffset 700ms var(--ease); }
+@media (prefers-reduced-motion: reduce) { .goal-fill { transition: none; } }
+.goal-pick { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 14px; }
+.goal-pick button {
+  min-height: 52px; padding: 6px 4px; border: 0; border-radius: 12px; background: var(--surface);
+  font: 600 14px var(--font-ui); color: var(--ink); cursor: pointer; box-shadow: inset 0 0 0 1.5px var(--line);
+}
+.goal-pick button[aria-pressed="true"] { box-shadow: inset 0 0 0 2px var(--accent); color: var(--accent-ink); }
+.goal-pick button:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+.rail-links { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 4px; }
+.rail-links a {
+  display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 6px 10px; margin: 0 -10px;
+  border-radius: 12px; color: var(--ink); font-weight: 600;
+}
+.rail-links a:hover { text-decoration: none; background: var(--fill); }
+.rail-links a:focus-visible { outline: 3px solid var(--ink); outline-offset: 1px; }
+.rail-links svg { flex: none; color: var(--accent); }

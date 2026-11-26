@@ -35,6 +35,8 @@ const COLUMNS: Col[] = [
     title: "Practice",
     links: [
       { href: "/practice", label: "Practice" },
+      { href: "/practice/flashcards", label: "Flashcards" },
+      { href: "/practice/match", label: "Match" },
       { href: "/review", label: "Review" },
       { href: "/ask", label: "Ask Pip" },
       { href: "/dashboard", label: "Progress" },

@@ -18,7 +18,7 @@ const PARTS: { part: string; student: string | null; ai: string }[] = [
   { part: "Design review", student: null, ai: "AI role-play (not real judges): Haiku agents acted as five reviewers." },
 ];
 
-const TESTS = 40;
+const TESTS = 44;
 
 export default function HowWeBuiltItPage() {
   const hasStudents = PARTS.some((p) => p.student);
@@ -101,6 +101,17 @@ export default function HowWeBuiltItPage() {
         review on time. Next comes a finished lesson below 60%, then the next new lesson, and finally practice on whatever is
         weakest.
       </p>
+      <h3>6. Lessons, flashcards and Match</h3>
+      <p>
+        We studied how Duolingo, Quizlet, Brilliant and Khan Academy design practice and kept the patterns that help
+        learning, not the ones that pressure teens. In a lesson you pick an answer and press Check. A miss shows the right
+        answer and why straight away, and the question comes back at the end of the lesson, up to twice. The path shows one
+        clear next step and a mastery ring on every finished lesson. <Link href="/practice/flashcards">Flashcards</Link> turn
+        each idea and each true-or-false claim into a card you sort into &ldquo;Still learning&rdquo; or &ldquo;Know
+        it&rdquo;, and the ones you&rsquo;re still learning come back next round. <Link href="/practice/match">Match</Link>{" "}
+        pairs terms with their meanings, with an optional clock and no penalty for a wrong pair. There are no lives, no
+        leaderboards and no paid streak repairs.
+      </p>
       <h3>Points, levels and streaks</h3>
       <p>
         A first-try answer is worth {XP.correctFirstTry} XP and a second-try answer {XP.correctAfterRetry}. Finishing a lesson
@@ -115,7 +126,8 @@ export default function HowWeBuiltItPage() {
           {TESTS} automated tests on the engine (<code>pnpm --filter @neuronaut/core test</code>). They check the Bayes formula
           against numbers worked out by hand, and properties over thousands of random cases: estimates stay between 0 and 1, a
           right answer never lowers mastery, and more days never raise it. They also cover streak freezes, review timing,
-          importing damaged or old save files, merging two saves, and Ask Pip&rsquo;s lesson search. Each idea card&rsquo;s
+          importing damaged or old save files, merging two saves, the flashcard deck and Match rounds (every tile has
+          exactly one partner), and Ask Pip&rsquo;s lesson search. Each idea card&rsquo;s
           title must find its own lesson, and real student questions such as &ldquo;why do chatbots make up fake
           sources&rdquo; must reach the right one. That test caught a real gap: the search didn&rsquo;t know
           &ldquo;sources&rdquo; and &ldquo;source&rdquo; were the same word, so we added stemming.

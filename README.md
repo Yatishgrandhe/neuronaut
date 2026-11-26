@@ -37,7 +37,7 @@ Ask Pip needs `ANTHROPIC_API_KEY` in `apps/web/.env.local` (see `.env.example`).
 pnpm --filter @neuronaut/core test
 ```
 
-The engine has 40 tests. They cover the Bayes formula against hand-worked numbers, the lesson search that grounds Ask Pip (it must find the right lesson for every idea card and for real student questions), property checks over thousands of random cases, the review schedule, streak freezes, damaged and old save files, and merging two saves.
+The engine has 44 tests. They cover the Bayes formula against hand-worked numbers, the lesson search that grounds Ask Pip (it must find the right lesson for every idea card and for real student questions), property checks over thousands of random cases, the review schedule, streak freezes, damaged and old save files, and merging two saves.
 
 ## How it fits together
 
@@ -45,7 +45,7 @@ The engine has 40 tests. They cover the Bayes formula against hand-worked number
 |---|---|
 | `packages/core` | Pure TypeScript, no browser code. Lessons (`content.ts`), answer checking (`check.ts`), XP, streaks, badges and the Leitner review scheduler (`engine.ts`), the mastery model (`mastery.ts`), and demo data built by running the real engine (`sample.ts`). |
 | `apps/web` | Next.js 16 site. Progress is saved in the browser (localStorage); there are no accounts. |
-| `apps/web/src/lib/tutor.ts` | Ask Pip: BM25 search over the lesson text, then Claude answers from the passages it finds. |
+| `apps/web/src/lib/tutor.ts` | Ask Pip: BM25 search over the lesson text, then Claude Haiku 5.5 answers from the passages it finds. |
 | `apps/web/planet` | The hero "word planet": Rust compiled to WebAssembly and drawn with WebGL2. |
 
 ## The learning engine in one paragraph
