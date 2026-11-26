@@ -45,9 +45,13 @@ export default async function ModulePage({ params }: PageProps<"/learn/[moduleId
             <li key={l.id} className="lesson-row">
               <Photo name={lessonPhoto[l.id]} width={240} height={180} sizes="160px" className="lesson-thumb" />
               <div className="lesson-row-copy">
-                <p className="lesson-meta num">
-                  Lesson {i + 1} · <Clock size={14} aria-hidden /> {l.minutes} min · {l.exercises.length} questions
-                </p>
+                <ul className="lesson-meta num">
+                  <li>Lesson {i + 1}</li>
+                  <li>
+                    <Clock size={14} aria-hidden /> {l.minutes} min
+                  </li>
+                  <li>{l.exercises.length} questions</li>
+                </ul>
                 <h2>{l.title}</h2>
                 <p>{l.summary}</p>
               </div>

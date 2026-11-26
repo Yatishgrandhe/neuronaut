@@ -13,7 +13,7 @@ export default function LearnPage() {
       <header className="page-head">
         <h1>Your learning path</h1>
         <p className="lede">
-          Start any module. Lessons inside a module unlock in order, and each one takes about five minutes.
+          Start any module. Inside a module, each lesson opens once you finish the one before it. Each takes 4 to 6 minutes.
         </p>
       </header>
       {modules.map((m, i) => (

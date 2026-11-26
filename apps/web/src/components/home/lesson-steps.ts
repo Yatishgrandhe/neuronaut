@@ -6,7 +6,7 @@ export type StepIndex = 0 | 1 | 2 | 3;
 export const LESSON_STEPS: { num: string; title: string; body: string; pip: PipPose }[] = [
   { num: "01", title: "Read two ideas", body: "Every lesson starts with two short cards that explain one concept in plain words.", pip: "idle" },
   { num: "02", title: "Answer five questions", body: "Multiple choice, true or false, put-in-order and matching. Every answer tells you why.", pip: "think" },
-  { num: "03", title: "Get the missed ones back", body: "Wrong answers come back after 1, 3, 7 and 16 days, until they stick.", pip: "point" },
+  { num: "03", title: "Get the missed ones back", body: "Wrong answers come back the same day, then after 1, 3, 7 and 16 days, until they stick.", pip: "point" },
   { num: "04", title: "Earn a badge", body: "Finish lessons to earn skill badges like Prompt Smith and Fair Player.", pip: "cheer" },
 ];
 

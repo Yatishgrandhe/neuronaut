@@ -100,7 +100,6 @@
   border-radius: 999px;
   background: none;
   cursor: pointer;
-  transition: width 0.3s ease;
 }
 
 .lc-dot::before {
@@ -109,15 +108,11 @@
   height: 8px;
   border-radius: 999px;
   background: #b5afa6;
-  transition: width 0.3s ease, background-color 0.3s ease;
-}
-
-.lc-dot.is-active {
-  width: 40px;
+  transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
 .lc-dot.is-active::before {
-  width: 22px;
+  transform: scaleX(2.75);
   background: #1d1d1f;
 }
 

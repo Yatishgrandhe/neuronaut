@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { allLessons } from "./content.ts";
-import { BKT, HALF_LIFE_DAYS, MASTERED, bktRun, bktUpdate, decayed, guessRate, masteryLabel } from "./mastery.ts";
+import { BKT, GRACE_DAYS, HALF_LIFE_DAYS, MASTERED, bktRun, bktUpdate, decayed, guessRate, masteryLabel } from "./mastery.ts";
 import {
   completeLesson,
   completePractice,
@@ -184,10 +184,30 @@ test("review tally counts toward the Second Look badge", () => {
   assert.equal(Boolean(s.badges.reviewer), keys.length * 2 >= 10);
 });
 
+test("a skill just mastered is still Mastered the next day and three days later", () => {
+  const l = allLessons[0];
+  const perfect = l.exercises.map((e) => ({ exerciseId: e.id, correct: true, retried: false }));
+  const s = completeLesson(createProgress(), l, perfect, d("2026-11-20")).state;
+  for (const day of ["2026-11-20", "2026-11-21", "2026-11-23"]) assert.equal(masteryLabel(masteryOf(s, l.id, day)), "Mastered", day);
+});
+
+test("a right practice answer on a due review question counts as reviewing it; a not-yet-due one keeps its date", () => {
+  const l = allLessons[0];
+  const results = l.exercises.map((e, i) => ({ exerciseId: e.id, correct: true, retried: i === 0 }));
+  const s = completeLesson(createProgress(), l, results, d("2026-11-20")).state;
+  const key = `${l.id}:${l.exercises[0].id}`;
+  assert.deepEqual(s.review[key], { key, box: 1, due: "2026-11-20" });
+  const due = completePractice(s, [{ key, correct: true }], d("2026-11-20")).state;
+  assert.deepEqual(due.review[key], { key, box: 2, due: "2026-11-21" }, "due item advances a box");
+  const early = completePractice(due, [{ key, correct: true }], d("2026-11-20")).state;
+  assert.deepEqual(early.review[key], due.review[key], "practising before it's due doesn't skip the gap");
+});
+
 test("forgetting: the estimate halves toward the start every half-life, never below it", () => {
-  close(decayed(0.9, HALF_LIFE_DAYS), BKT.init + (0.9 - BKT.init) / 2);
-  close(decayed(0.9, 2 * HALF_LIFE_DAYS), BKT.init + (0.9 - BKT.init) / 4);
+  close(decayed(0.9, GRACE_DAYS + HALF_LIFE_DAYS), BKT.init + (0.9 - BKT.init) / 2);
+  close(decayed(0.9, GRACE_DAYS + 2 * HALF_LIFE_DAYS), BKT.init + (0.9 - BKT.init) / 4);
   assert.equal(decayed(0.9, 0), 0.9);
+  assert.equal(decayed(0.9, GRACE_DAYS), 0.9, "no forgetting inside the grace period");
   assert.equal(decayed(0.1, 100), 0.1, "never pulled up toward the start either");
   const r = rng(7);
   for (let i = 0; i < 500; i++) {

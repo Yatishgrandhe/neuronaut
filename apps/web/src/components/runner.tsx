@@ -96,7 +96,7 @@ export function Runner({
         </span>
       </div>
 
-      <div className="runner-body wrap-narrow" key={`${item.key}-${attempt}`}>
+      <div className="runner-body wrap-narrow" key={`${item.key}-${attempt}`} data-verdict={verdict ?? undefined}>
         <h1 className="runner-prompt">{exercisePrompt(item.exercise)}</h1>
         <ExerciseView exercise={item.exercise} seed={`${item.key}-${attempt}`} locked={verdict !== null} onChange={onChange} />
       </div>

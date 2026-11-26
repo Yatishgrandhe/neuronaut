@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { BKT, HALF_LIFE_DAYS, MASTERED, PRACTICE_SIZE, XP, allLessons, modules, totalExercises } from "@neuronaut/core";
+import { BKT, GRACE_DAYS, HALF_LIFE_DAYS, MASTERED, PRACTICE_SIZE, XP, allLessons, modules, totalExercises } from "@neuronaut/core";
 
 export const metadata: Metadata = {
   title: "How we built it",
@@ -18,7 +18,7 @@ const PARTS: { part: string; student: string | null; ai: string }[] = [
   { part: "Design review", student: null, ai: "AI role-play (not real judges): Haiku agents acted as five reviewers." },
 ];
 
-const TESTS = 28;
+const TESTS = 31;
 
 export default function HowWeBuiltItPage() {
   const hasStudents = PARTS.some((p) => p.student);
@@ -77,22 +77,25 @@ export default function HowWeBuiltItPage() {
       </p>
       <h3>2. Forgetting</h3>
       <p>
-        Plain Bayesian Knowledge Tracing assumes you never forget. We added a forgetting curve. Without practice, the part of
-        your estimate above the starting value halves every {HALF_LIFE_DAYS} days. A lesson you aced a month ago is no longer
+        Plain Bayesian Knowledge Tracing assumes you never forget. We added a forgetting curve. For the first {GRACE_DAYS} days
+        after you practise nothing changes, which matches the review schedule&rsquo;s early gaps. After that, the part of your
+        estimate above the starting value halves every {HALF_LIFE_DAYS} days. A lesson you aced a month ago is no longer
         &ldquo;Mastered&rdquo;, so it comes back in Practice.
       </p>
       <h3>3. Practice picks your weakest lessons</h3>
       <p>
         <Link href="/practice">Practice</Link> builds a set of {PRACTICE_SIZE} questions from lessons you have finished. Each
         lesson&rsquo;s chance of being picked is one minus your mastery, so a lesson at 40% comes up three times as often as one
-        at 80%. A question you miss in practice also goes into Review.
+        at 80%. Lessons you&rsquo;ve mastered sit out unless everything is mastered. Practice and Review share one queue. A
+        question you miss in practice goes into Review, and a right answer on a question that is due counts as reviewing
+        it.
       </p>
       <h3>4. Review: spaced repetition</h3>
       <p>
-        A question you miss comes back after 0, 1, 3, 7 and 16 days (a Leitner system). Each right answer moves it to the next,
+        A question you miss comes back the same day, then after 1, 3, 7 and 16 days (a Leitner system). Each right answer moves it to the next,
         longer gap; a miss sends it back to the start. Right five times in a row and it leaves Review.
       </p>
-      <h3>5. &ldquo;Do this next&rdquo;</h3>
+      <h3>5. The &ldquo;Next&rdquo; card</h3>
       <p>
         The dashboard puts these together in a fixed order. First come reviews that are due, because spacing only works if you
         review on time. Next comes a finished lesson below 60%, then the next new lesson, and finally practice on whatever is
@@ -116,7 +119,8 @@ export default function HowWeBuiltItPage() {
         </li>
         <li>
           The tests found two real bugs, both now fixed. Merging two saves dropped the review queue. And when the first save
-          was the newer one, the merge ignored the other save completely.
+          was the newer one, the merge ignored the other save completely. One known limit is still there: merging keeps the
+          larger XP total rather than adding the two, because a save doesn&rsquo;t record which device earned what.
         </li>
         <li>
           On the production build, Lighthouse scored accessibility, best practices and SEO at 100. We also measured page speed

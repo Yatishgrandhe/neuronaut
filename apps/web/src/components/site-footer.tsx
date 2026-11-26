@@ -106,11 +106,9 @@ export function SiteFooter() {
             <Link className="ft-link" href="/sources">
               Sources
             </Link>
-            <span aria-hidden="true"> · </span>
             <Link className="ft-link" href="/copyright-checklist">
               Copyright checklist
             </Link>
-            <span aria-hidden="true"> · </span>
             <Link className="ft-link" href="/work-log">
               Work log
             </Link>

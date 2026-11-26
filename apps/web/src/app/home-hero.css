@@ -23,7 +23,7 @@
   font: 400 clamp(42px, 5.4vw, 80px) / 1.03 var(--font-display); letter-spacing: -0.02em; color: #f7f4ee;
   text-wrap: balance; text-shadow: 0 2px 30px rgb(0 0 0 / 0.45);
 }
-.hero-h em { font-style: italic; color: #ff9a5c; }
+.hero-h em { font-style: normal; color: #ff9a5c; }
 .hero-sub { margin: 18px 0 0; max-width: 50ch; font: 400 19px/1.5 var(--font-ui); color: rgb(247 244 238 / 0.8); text-wrap: pretty; }
 .hero-facts { margin: 18px 0 0; font: 400 14px var(--font-ui); color: rgb(247 244 238 / 0.66); font-variant-numeric: tabular-nums; }
 
@@ -32,13 +32,12 @@
 .hero-start {
   display: inline-flex; align-items: center; height: 54px; padding: 0 30px; border-radius: 999px;
   background: #c2410c; color: #fff; font: 600 17px var(--font-ui); text-decoration: none;
-  box-shadow: 0 12px 28px -12px rgb(194 65 12 / 0.75);
   transition: background-color 150ms ease, transform 120ms ease;
 }
 .hero-start:hover { background: #d9541a; color: #fff; text-decoration: none; }
 .hero-start:active { transform: translateY(1px); }
 .hero-start:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
-.hero-ask { font: 500 16px var(--font-ui); color: #f7f4ee; text-decoration: underline; text-decoration-color: rgb(255 154 92 / 0.8); text-decoration-thickness: 1.5px; text-underline-offset: 0.25em; }
+.hero-ask { display: inline-flex; align-items: center; min-height: 44px; font: 500 16px var(--font-ui); color: #f7f4ee; text-decoration: underline; text-decoration-color: rgb(255 154 92 / 0.8); text-decoration-thickness: 1.5px; text-underline-offset: 0.25em; }
 .hero-ask:hover { color: #fff; text-decoration-color: #ff9a5c; }
 .hero-ask:focus-visible { outline: 2px solid #ff9a5c; outline-offset: 3px; border-radius: 4px; }
 
@@ -64,7 +63,7 @@
 .hero-pip svg { display: block; }
 .hero-proof { position: relative; z-index: 2; display: flex; justify-content: center; }
 .hero-proof > .pf { width: 100%; max-width: 760px; }
-.hero-credit { position: relative; z-index: 2; width: fit-content; max-width: min(92vw, 640px); margin: 14px auto 0; padding: 6px 14px; border-radius: 10px; background: rgb(3 6 10 / 0.8); text-align: center; font: 400 12px/1.4 var(--font-ui); color: rgb(247 244 238 / 0.6); text-shadow: 0 1px 8px rgb(0 0 0 / 0.8); }
+.hero-credit { position: relative; z-index: 2; width: fit-content; max-width: min(92vw, 640px); margin: 14px auto 0; padding: 6px 14px; border-radius: 10px; background: rgb(3 6 10 / 0.94); text-align: center; font: 400 12px/1.4 var(--font-ui); color: rgb(247 244 238 / 0.6); text-shadow: 0 1px 8px rgb(0 0 0 / 0.8); }
 
 /* The paper page rises over the planet. */
 .hero + * { position: relative; z-index: 1; margin-top: -28px; border-radius: 28px 28px 0 0; }
@@ -81,7 +80,7 @@ body:has(#hero) .site-header:not([data-scrolled="true"]) .chip { background: rgb
 /* ---------- The live question: dark glass on the planet ---------- */
 .pf {
   position: relative; padding: 16px 22px 12px; border-radius: 16px; color: #f3efe8;
-  background: rgb(8 12 18 / 0.9);
+  background: rgb(8 12 18 / 0.97);
   box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.12), 0 24px 50px -20px rgb(0 0 0 / 0.7);
 }
 .pf-sheet { margin: 0; }
@@ -101,7 +100,7 @@ body:has(#hero) .site-header:not([data-scrolled="true"]) .chip { background: rgb
 .pf-q { margin: 10px 0 0; font: 700 17px/1.3 var(--font-display); color: #f7f4ee; }
 .pf-opts { list-style: none; margin: 10px 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
 .pf-opt {
-  display: flex; align-items: center; gap: 10px; width: 100%; height: 100%; min-height: 42px; padding: 7px 12px;
+  display: flex; align-items: center; gap: 10px; width: 100%; height: 100%; min-height: 44px; padding: 7px 12px;
   border: 0; border-radius: 10px; background: rgb(255 255 255 / 0.07); color: #f3efe8;
   font: 400 14px/1.3 var(--font-ui); text-align: left; cursor: pointer; transition: background-color 150ms ease;
 }
@@ -156,3 +155,6 @@ body:has(#hero) .site-header:not([data-scrolled="true"]) .chip { background: rgb
   .pf-claim { font-size: 17px; }
   .pf-opts { grid-template-columns: minmax(0, 1fr); }
 }
+
+.hero-facts { display: flex; flex-wrap: wrap; gap: 4px 0; padding: 0; list-style: none; }
+.hero-facts li + li { margin-left: 12px; padding-left: 12px; border-left: 1px solid rgb(247 244 238 / 0.3); }

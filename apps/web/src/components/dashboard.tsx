@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowRight, Download, Dumbbell, Flame, Play, Repeat2, RotateCcw, Snowflake, Sparkles, Upload, Zap } from "lucide-react";
 import {
   BADGES,
@@ -12,7 +12,7 @@ import {
   masteryOf,
   moduleProgress,
   modules,
-  recentDays,
+  weekDays,
   recommendNext,
   sampleProgress,
   visibleStreak,
@@ -23,6 +23,7 @@ import { Pip } from "./brand";
 import { useProgress } from "./progress";
 
 const EPOCH = new Date(0);
+const SAMPLE_FLAG = "neuronaut.sample";
 
 export function Dashboard() {
   const { state, ready, exportJson, importJson, reset, setState } = useProgress();
@@ -30,10 +31,21 @@ export function Dashboard() {
   const now = ready ? new Date() : EPOCH;
   const fileRef = useRef<HTMLInputElement>(null);
   const [msg, setMsg] = useState<string | null>(null);
+  const [isSample, setIsSample] = useState(false);
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setIsSample(localStorage.getItem(SAMPLE_FLAG) === "1"));
+    return () => cancelAnimationFrame(id);
+  }, []);
+  const clearSample = () => {
+    localStorage.removeItem(SAMPLE_FLAG);
+    setIsSample(false);
+    reset();
+    setMsg("Sample progress cleared.");
+  };
 
   const lp = levelProgress(state.xp);
   const streak = ready ? visibleStreak(state, dayKey(now)) : 0;
-  const days = recentDays(state, 7, now);
+  const days = weekDays(state, now);
   const maxDay = Math.max(20, ...days.map((d) => d.xp));
   const week = weekXp(state, now);
   const lessonsDone = Object.keys(state.lessons).length;
@@ -66,19 +78,29 @@ export function Dashboard() {
         <Pip mood={lessonsDone ? "happy" : "idle"} size={96} />
       </header>
 
+      {isSample && lessonsDone > 0 ? (
+        <p className="sample-banner" role="status">
+          <span>
+            <strong>This is sample progress</strong>, not yours: six days of lessons run through the real engine.
+          </span>
+          <button type="button" className="btn btn-ghost" onClick={clearSample}>
+            Clear sample
+          </button>
+        </p>
+      ) : null}
       {rec ? <NextUp rec={rec} /> : null}
       {ready && lessonsDone === 0 ? (
         <p className="dash-sample">
-          Judging or just curious?{" "}
           <button
             type="button"
             className="link-btn"
             onClick={() => {
               setState(sampleProgress());
-              setMsg("Sample progress loaded: six days of lessons, run through the real engine. Start over below to clear it.");
+              localStorage.setItem(SAMPLE_FLAG, "1");
+              setIsSample(true);
             }}
           >
-            <Sparkles size={16} aria-hidden /> Fill this page with sample progress
+            <Sparkles size={16} aria-hidden /> See this page with sample progress
           </button>
         </p>
       ) : null}
@@ -102,7 +124,7 @@ export function Dashboard() {
         <div className="dash-tile tile-streak">
           <Flame aria-hidden />
           <p className={`dash-big num${ready ? "" : " skel"}`}>{streak}</p>
-          <p className="dash-label">Day streak · best {state.streak.longest}</p>
+          <p className="dash-label">Day streak. Best: {state.streak.longest}</p>
           <p className="freezes" aria-label={`${state.streak.freezes} of ${MAX_FREEZES} streak freezes`}>
             {Array.from({ length: MAX_FREEZES }, (_, k) => (
               <Snowflake key={k} size={18} aria-hidden data-on={k < state.streak.freezes} />
@@ -125,18 +147,20 @@ export function Dashboard() {
         {week === 0 ? (
           <p className="week-empty">No XP yet this week. One lesson earns about 75 XP, so the goal is two lessons away.</p>
         ) : null}
-        <ol className="bars" aria-label="XP earned on each of the last 7 days">
+        {week === 0 ? null : (
+        <ol className="bars" aria-label="XP earned each day this week">
           {days.map((d) => {
             const date = new Date(`${d.day}T12:00:00`);
             return (
               <li key={d.day} aria-label={`${date.toLocaleDateString(undefined, { weekday: "long" })}: ${d.xp} XP`}>
                 <span className="bar-val num">{d.xp || ""}</span>
-                <span className="bar" style={{ height: `${(d.xp / maxDay) * 100}%` }} data-today={d.day === dayKey(now)} />
+                <span className="bar" style={{ height: `${(d.xp / maxDay) * 100}%` }} data-today={d.day === dayKey(now)} data-future={d.future} />
                 <span className="bar-day">{date.toLocaleDateString(undefined, { weekday: "narrow" })}</span>
               </li>
             );
           })}
         </ol>
+        )}
       </section>
 
       <section className="dash-modules" aria-labelledby="mod-h">
@@ -157,6 +181,9 @@ export function Dashboard() {
               <h3>
                 <Link href={`/learn/${m.id}`}>{m.title}</Link> <span className="num muted">{p.done}/{p.total} lessons</span>
               </h3>
+              {m.lessons.every((l) => state.mastery[l.id] === undefined) ? (
+                <p className="skill-none">Not started yet. Your first lesson here adds {m.lessons.length} skills to track.</p>
+              ) : (
               <ul className="skills">
                 {m.lessons.map((l) => {
                   const started = state.mastery[l.id] !== undefined;
@@ -175,11 +202,15 @@ export function Dashboard() {
                       >
                         <span style={{ width: `${started ? v * 100 : 0}%` }} />
                       </span>
-                      <span className="skill-label">{started ? `${label} · ${Math.round(v * 100)}%` : label}</span>
+                      <span className="skill-label">
+                        {label}
+                        {started ? <span className="skill-pct num">{Math.round(v * 100)}%</span> : null}
+                      </span>
                     </li>
                   );
                 })}
               </ul>
+              )}
             </div>
           );
         })}
@@ -232,6 +263,8 @@ export function Dashboard() {
             className="btn btn-ghost danger"
             onClick={() => {
               if (confirm("Erase all progress on this device? This can't be undone unless you have a backup.")) {
+                localStorage.removeItem(SAMPLE_FLAG);
+                setIsSample(false);
                 reset();
                 setMsg("Progress erased.");
               }
@@ -263,8 +296,7 @@ function NextUp({ rec }: { rec: ReturnType<typeof recommendNext> }) {
     <section className="next-up" aria-labelledby="next-h">
       <span className="next-icon">{body.icon}</span>
       <div>
-        <p className="dash-label">Do this next</p>
-        <h2 id="next-h">{body.title}</h2>
+        <h2 id="next-h">Next: {body.title}</h2>
         <p className="next-why">{body.why}</p>
       </div>
       <Link className="btn btn-spark" href={body.href}>

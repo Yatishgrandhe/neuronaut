@@ -263,8 +263,8 @@
 }
 
 .cc-root .cc-row[data-state="done"] .cc-num {
-  background: var(--good);
-  color: #fff;
+  background: var(--leaf-ink, #146c3a);
+  color: var(--on-accent);
 }
 
 .cc-root .cc-row .cc-title {
@@ -405,8 +405,9 @@
 }
 
 .cc-arrow:disabled {
-  opacity: 0.35;
-  cursor: default;
+  background: var(--paper-2);
+  color: var(--ink-3);
+  cursor: not-allowed;
 }
 
 .cc-dots {

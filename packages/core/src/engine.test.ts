@@ -13,6 +13,7 @@ import {
   MAX_FREEZES,
   recentDays,
   visibleStreak,
+  weekDays,
   weekXp,
 } from "./engine.ts";
 
@@ -136,4 +137,15 @@ test("the review queue never contains a mastered item", () => {
     s = completeReview(s, [{ key, correct: true }], d(day)).state;
   }
   assert.equal(s.review[key], undefined, "five right answers in a row = mastered");
+});
+
+test("the week chart and the week total always agree", () => {
+  let s = createProgress();
+  for (const day of ["2026-11-19", "2026-11-21", "2026-11-22", "2026-11-23", "2026-11-25"]) s = completeLesson(s, lesson, allRight, d(day)).state;
+  for (const now of ["2026-11-25", "2026-11-26", "2026-11-29"]) {
+    const days = weekDays(s, d(now));
+    assert.equal(days[0].day, "2026-11-23", "the week starts on Monday");
+    assert.equal(days.reduce((n, x) => n + x.xp, 0), weekXp(s, d(now)), now);
+    assert.ok(days.every((x) => !x.future || x.xp === 0));
+  }
 });

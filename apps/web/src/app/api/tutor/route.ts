@@ -16,7 +16,9 @@ export async function POST(req: Request) {
   if (!tutorConfigured()) {
     return Response.json({ error: "Ask Pip isn't set up on this server yet." }, { status: 503 });
   }
-  if (!rateLimit(`tutor:${clientKey(req)}`, 20, 10 * 60_000)) {
+  // Per-visitor limit first (so one visitor's rejected requests don't use up everyone's share),
+  // then a global cap: however many IPs a caller uses, the site answers at most 300 an hour per instance.
+  if (!rateLimit(`tutor:${clientKey(req)}`, 20, 10 * 60_000) || !rateLimit("tutor:all", 300, 60 * 60_000)) {
     return Response.json({ error: "You're asking fast! Take a short break and try again in a few minutes." }, { status: 429 });
   }
   const parsed = Body.safeParse(await req.json().catch(() => null));

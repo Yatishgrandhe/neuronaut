@@ -22,9 +22,10 @@ export function ModulePath({ module, index }: { module: Module; index: number })
     <section className="path-module" data-color={module.color} aria-labelledby={`pm-${module.id}`}>
       <header className="path-band">
         <div>
-          <p className="module-step num">Module {index + 1}</p>
           <h2 id={`pm-${module.id}`}>
-            <Link href={`/learn/${module.id}`}>{module.title}</Link>
+            <Link href={`/learn/${module.id}`}>
+              <span className="num path-n">{index + 1}.</span> {module.title}
+            </Link>
           </h2>
           <p className="path-tag">{module.tagline}</p>
         </div>

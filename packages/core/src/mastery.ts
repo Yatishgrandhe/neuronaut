@@ -16,9 +16,10 @@
  * pairs by luck is rare. That is why a right true/false answer moves the estimate less than a
  * right ordering answer.
  *
- * Classic BKT assumes nothing is ever forgotten. We add a forgetting curve: the stored
- * estimate decays toward the starting value with a half-life of HALF_LIFE_DAYS since the skill
- * was last practised. So a lesson aced three weeks ago is no longer "Mastered" and shows up in
+ * Classic BKT assumes nothing is ever forgotten. We add a forgetting curve: after a grace
+ * period of GRACE_DAYS with no practice, the stored estimate decays toward the starting value
+ * with a half-life of HALF_LIFE_DAYS. The grace period matches the review schedule's early gaps
+ * (1 and 3 days), so a skill mastered today is still "Mastered" tomorrow. So a lesson aced three weeks ago is no longer "Mastered" and shows up in
  * Practice again, which is the point of spacing. All functions are pure.
  */
 import type { Exercise } from "./types.ts";
@@ -48,10 +49,14 @@ export function guessRate(ex: Exercise): number {
 /** Days for the part of the estimate above the starting value to halve without practice. */
 export const HALF_LIFE_DAYS = 21;
 
+/** Days after practice before forgetting starts. */
+export const GRACE_DAYS = 3;
+
 /** The estimate `days` after it was last updated: decays toward BKT.init, never below it. */
 export function decayed(p: number, days: number): number {
-  if (days <= 0 || p <= BKT.init) return p;
-  return BKT.init + (p - BKT.init) * Math.pow(0.5, days / HALF_LIFE_DAYS);
+  const d = days - GRACE_DAYS;
+  if (d <= 0 || p <= BKT.init) return p;
+  return BKT.init + (p - BKT.init) * Math.pow(0.5, d / HALF_LIFE_DAYS);
 }
 
 /** A skill counts as mastered at or above this estimate (the usual BKT cut-off). */

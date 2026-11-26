@@ -62,7 +62,7 @@
 @media (min-width: 48em) and (prefers-reduced-motion: no-preference) {
   .ls-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(32px, 5vw, 80px); }
   .ls-steps { gap: 0; }
-  .ls-step { min-height: 52vh; align-content: center; opacity: 0.45; transition: opacity 250ms var(--ease); }
+  .ls-step { min-height: 52vh; align-content: center; opacity: 0.7; transition: opacity 250ms var(--ease); }
   .ls-step[data-active="true"] { opacity: 1; }
   .ls-step[data-active="true"] .ls-num { background: var(--ink); color: var(--paper); }
   .ls-inline { display: none; }

@@ -253,7 +253,7 @@
 .ft-link {
   display: inline-flex;
   align-items: center;
-  min-height: 32px;
+  min-height: 44px;
   color: var(--ink-2);
   text-decoration: none;
 }
@@ -296,3 +296,4 @@
 @media (max-width: 1023px) and (min-width: 768px) {
   .pn-grid { grid-template-columns: minmax(0, 1fr); }
 }
+.ft-docs { display: flex; flex-wrap: wrap; gap: 0 20px; }

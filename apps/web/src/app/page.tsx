@@ -53,7 +53,11 @@ export default function Home() {
               or ask Pip a question
             </Link>
           </div>
-          <p className="hero-facts">Free · no account · {lessonLength} lessons</p>
+          <ul className="hero-facts">
+            <li>Free</li>
+            <li>No account</li>
+            <li>{lessonLength} lessons</li>
+          </ul>
         </div>
         <div className="hero-lower">
           <HeroEarth />

@@ -38,7 +38,7 @@ export function ReviewSession() {
       <header className="page-head">
         <h1>Review</h1>
         <p className="lede">
-          Questions you miss come back after 0, 1, 3, 7 and 16 days. Answer one right on the first try five times in a row and it&rsquo;s mastered.
+          Questions you miss come back the same day, then after 1, 3, 7 and 16 days. Answer one right on the first try five times in a row and it&rsquo;s mastered.
         </p>
       </header>
 
@@ -75,7 +75,7 @@ export function ReviewSession() {
                   {new Date(`${nextDue}T12:00:00`).toLocaleDateString(undefined, { weekday: "long", month: "short", day: "numeric" })}.
                 </>
               ) : (
-                "Any question you miss in a lesson or in practice shows up here, then comes back after 1, 3, 7 and 16 days."
+                "Any question you miss in a lesson or in practice shows up here the same day, then again after 1, 3, 7 and 16 days."
               )}
             </p>
             <div className="review-actions">

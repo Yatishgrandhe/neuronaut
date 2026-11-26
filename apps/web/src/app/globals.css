@@ -51,6 +51,7 @@
   --blue: var(--ink);
   --blue-soft: var(--paper-2);
   --leaf: #1a8a4a;
+  --leaf-ink: #146c3a;
   --leaf-soft: #e8f6ee;
   --sun: #b25000;
   --sun-fill: #ff9f0a;
@@ -142,6 +143,7 @@ h1, h2, h3, h4 {
 p { margin: 0; text-wrap: pretty; }
 button { font: inherit; color: inherit; letter-spacing: inherit; }
 .num { font-variant-numeric: tabular-nums; }
+html, body { overflow-x: clip; }
 #main { overflow-x: clip; }
 
 .wrap { width: 100%; max-width: calc(1200px + 2 * var(--pad)); margin-inline: auto; padding-inline: max(var(--pad), env(safe-area-inset-left)) max(var(--pad), env(safe-area-inset-right)); }

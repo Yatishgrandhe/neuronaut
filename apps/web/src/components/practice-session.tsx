@@ -56,7 +56,7 @@ export function PracticeSession() {
       </header>
 
       <div className="review-panel">
-        <Pip mood={changes ? "happy" : "think"} size={112} />
+        <Pip mood={changes ? "happy" : "idle"} size={112} />
         {changes ? (
           <div className="practice-result" role="status">
             <h2>Practice done</h2>
@@ -75,8 +75,10 @@ export function PracticeSession() {
         ) : null}
         {!ready ? null : queue.length ? (
           <>
-            <h2>{changes ? "Another round?" : "Today's set"}</h2>
-            <p>Focus: {focus.map(title).join(", ")}.</p>
+            <h2>{changes ? "Another round?" : "Your practice set is ready"}</h2>
+            <p>
+              {queue.length} questions, about {Math.max(1, Math.round(queue.length * 0.6))} minutes. Focus: {focus.map(title).join(", ")}.
+            </p>
             <button
               type="button"
               className="btn btn-spark btn-lg"

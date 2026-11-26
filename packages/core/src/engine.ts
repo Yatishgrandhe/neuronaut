@@ -406,8 +406,12 @@ export function completePractice(
     const [lessonId, exerciseId] = r.key.split(":");
     if (!(lessonId in before)) before[lessonId] = masteryOf(s, lessonId, today);
     observe(s, lessonId, exerciseId, r.correct, today);
-    // A practice miss joins the review queue, exactly like a lesson miss.
+    // Practice and Review share one queue. A miss joins it, exactly like a lesson miss. A right
+    // answer on a question that is *due* counts as reviewing it; one that isn't due yet leaves
+    // its date alone, so practice can't skip the spacing.
+    const item = s.review[r.key];
     if (!r.correct) scheduleReview(s, r.key, false, today);
+    else if (item && item.due <= today) scheduleReview(s, r.key, true, today);
   }
   addXp(s, results.filter((r) => r.correct).length * PRACTICE_XP, "practice", today, events);
   s.stats.practiceAnswered += results.length;
@@ -474,6 +478,17 @@ export function weekXp(s: ProgressState, now: Date = new Date()): number {
   let total = 0;
   for (let i = 0; i <= dow; i++) total += s.history[addDays(today, -i)] ?? 0;
   return total;
+}
+
+/** Monday to Sunday of the current week, so the chart and weekXp always agree. */
+export function weekDays(s: ProgressState, now: Date = new Date()): { day: string; xp: number; future: boolean }[] {
+  const today = dayKey(now);
+  const dow = (now.getDay() + 6) % 7; // Monday = 0
+  return Array.from({ length: 7 }, (_, i) => {
+    const day = addDays(today, i - dow);
+    const future = day > today;
+    return { day, xp: future ? 0 : (s.history[day] ?? 0), future };
+  });
 }
 
 /** Last n days of XP, oldest first. */

@@ -100,7 +100,7 @@ a.card:hover { text-decoration: none; }
 .menu-links a:hover { text-decoration: none; color: var(--accent-ink); }
 .menu-links a[aria-current="page"] { color: var(--accent-ink); }
 .menu-foot { margin-top: auto; display: grid; gap: 16px; }
-.html-menu-lock, html.menu-open { overflow: hidden; }
+.html-menu-lock, html.menu-open { overflow: clip; }
 @media (max-width: 1023px) {
   .main-nav { display: none; }
   .main-nav + .header-right { margin-left: auto; }
@@ -117,7 +117,7 @@ a.card:hover { text-decoration: none; }
 .route-bar[data-phase="done"] { opacity: 0; transform: scaleX(1); transition: transform 200ms ease, opacity 300ms ease 150ms; }
 
 /* ---------- XP flyer ---------- */
-.xp-flyer { position: fixed; left: 0; top: 0; z-index: 300; display: inline-flex; align-items: center; gap: 4px; padding: 6px 12px; border-radius: 980px; background: var(--good); color: #fff; font: 700 13px var(--font-ui); pointer-events: none; }
+.xp-flyer { position: fixed; left: 0; top: 0; z-index: 300; display: inline-flex; align-items: center; gap: 4px; padding: 6px 12px; border-radius: 980px; background: var(--leaf-ink, #146c3a); color: var(--on-accent); font: 700 13px var(--font-ui); pointer-events: none; }
 
 /* ---------- Intro (components/intro-overlay.tsx) ----------
    White on the night sky: the hero behind it is dark, and the nav logo it lands on is white. 
