@@ -247,3 +247,12 @@ test("mastering a review question records it; missing it again clears the record
   assert.ok(s.review[key]);
   assert.equal(s.reviewDone[key], undefined);
 });
+
+test("old mastered-question records are trimmed after 180 days", () => {
+  const key = `${allLessons[0].id}:${allLessons[0].exercises[0].id}`;
+  const s = { ...createProgress(), reviewDone: { [key]: "2026-01-01", recent: "2026-11-01" } };
+  const l = allLessons[1];
+  const out = completeLesson(s, l, l.exercises.map((e) => ({ exerciseId: e.id, correct: true, retried: false })), d("2026-11-20")).state;
+  assert.equal(out.reviewDone[key], undefined);
+  assert.equal(out.reviewDone.recent, "2026-11-01");
+});

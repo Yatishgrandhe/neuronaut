@@ -72,3 +72,36 @@ Main edits by round:
 - **R4 → v2.** Gate 1 is compliance only; the Ask Pip route is named; dark tokens added; AI-answer label, uncertainty note, copy/retry and source line; perf budget; guest-flow check; lesson citations; MVP cut list; fact-level held-out evaluation; fixture minimums; submission formats; licensing up front.
 - **R5.** No visible TODO on live pages; provenance via git/stat; font loading with fallback metrics; poster under 100 KB; Lighthouse at 4× CPU, two runs; three FAQ items on home; copy/retry only after streaming; two labellers with kappa; timed first win; scoped grep; mic path outside the core flow; coverage capped at 3+3.
 - **R6–R8.** Lesson-length range computed from data; transcripts carry the model ID and build; essay sign-off dated 2026-12-18; every TODO closed before submission; labels frozen before tuning; grep from the repo root; three due concepts named; "This is wrong" override on coverage.
+
+## Rounds 9-12 (2026-11-26): one project for Webmaster and Software Development
+
+The same five Haiku personas (AI role-play, not real judges), resumed with memory. They looked at re-captured screenshots, the page text and the code, and ran the tests. Fixes were applied between rounds. An Impeccable critique (27/40, then fixed), a Hallmark audit and a security review ran between rounds 2 and 3.
+
+| Persona | R1 | R2 | R3 | R4 |
+|---|---|---|---|---|
+| TSA Webmaster judge | 6 | 7.5 | 8 | 8.5 |
+| TSA Software Dev judge | 5 | 7 | 7 | 8 |
+| 9th-grade student | 5 | 7 | 8 | 8 |
+| Teacher + TSA advisor | 4 | 6 | 7 | 8 |
+| Design / a11y critic | 6 | 7 | 8 | 9 |
+| **Average** | **5.2** | **6.9** | **7.6** | **8.3** |
+
+Bugs the personas found by running the code, all fixed with regression tests:
+- mergeProgress dropped the review queue.
+- mergeProgress ignored the older save when the first argument was newer.
+- mergeProgress brought back mastered questions.
+- The week chart and the weekly total used different windows.
+- A practice answer didn't count toward review.
+- "Mastered" vanished the next day.
+- Search missed plural forms.
+
+Left open by choice:
+- **XP merging:** takes the max, not the sum (documented).
+- **Stat cards:** the Level/XP/streak cards stay, because gamification must be visible for Webmaster.
+
+Left open for the team:
+- names, hours and the AI reflection;
+- classmate test results;
+- the NASA image ID;
+- the public repo URL;
+- confirming with the advisor that one project may be entered in both events.

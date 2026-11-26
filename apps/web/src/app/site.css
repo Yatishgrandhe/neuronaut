@@ -515,3 +515,7 @@ ul.lesson-meta li + li { margin-left: 10px; padding-left: 10px; border-left: 1px
 .bars-cap { margin: 0 0 8px; }
 .fb-answer { font-weight: 700; color: var(--ink); }
 .runner-foot .link-btn { min-height: 44px; color: #b42318; }
+/* Revealed answer: neutral, not "success" green. */
+.runner-foot.is-revealed { background: var(--paper-2); }
+.runner-foot.is-revealed .fb-icon, .runner-foot.is-revealed .fb-title { color: var(--ink); }
+.runner-foot.is-revealed .btn-leaf { --b: var(--ink); --f: var(--paper); }

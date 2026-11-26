@@ -18,7 +18,7 @@ const PARTS: { part: string; student: string | null; ai: string }[] = [
   { part: "Design review", student: null, ai: "AI role-play (not real judges): Haiku agents acted as five reviewers." },
 ];
 
-const TESTS = 39;
+const TESTS = 40;
 
 export default function HowWeBuiltItPage() {
   const hasStudents = PARTS.some((p) => p.student);

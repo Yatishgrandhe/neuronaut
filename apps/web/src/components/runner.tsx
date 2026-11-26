@@ -100,10 +100,10 @@ export function Runner({
 
       <div className="runner-body wrap-narrow" key={`${item.key}-${attempt}`} data-verdict={revealed ? "revealed" : (verdict ?? undefined)}>
         <h1 className="runner-prompt">{exercisePrompt(item.exercise)}</h1>
-        <ExerciseView exercise={item.exercise} seed={`${item.key}-${attempt}`} locked={verdict !== null} onChange={onChange} />
+        <ExerciseView exercise={item.exercise} seed={item.key} locked={verdict !== null} onChange={onChange} />
       </div>
 
-      <div className={`runner-foot ${verdict ? `is-${verdict}` : ""}`} aria-live="polite">
+      <div className={`runner-foot ${revealed ? "is-revealed" : verdict ? `is-${verdict}` : ""}`} aria-live="polite">
         <div className="wrap-narrow runner-foot-row">
           {verdict === null && (
             <>

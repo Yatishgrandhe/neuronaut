@@ -264,6 +264,10 @@ function addXp(s: ProgressState, amount: number, reason: string, today: string, 
 function trimHistory(s: ProgressState, today: string) {
   const cutoff = addDays(today, -60);
   for (const k of Object.keys(s.history)) if (k < cutoff) delete s.history[k];
+  // Mastered-question records only matter for merging recent saves; keep 180 days so a long
+  // course doesn't grow the save forever.
+  const doneCutoff = addDays(today, -180);
+  for (const [k, day] of Object.entries(s.reviewDone)) if (day < doneCutoff) delete s.reviewDone[k];
 }
 
 /** Feeds one answer into the lesson's BKT estimate. First-try right counts as right. */

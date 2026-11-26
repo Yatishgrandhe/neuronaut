@@ -35,7 +35,7 @@ Ask Pip needs `ANTHROPIC_API_KEY` in `apps/web/.env.local` (see `.env.example`).
 pnpm --filter @neuronaut/core test
 ```
 
-The engine has 39 tests. They cover the Bayes formula against hand-worked numbers, the lesson search that grounds Ask Pip (it must find the right lesson for every idea card and for real student questions), property checks over thousands of random cases, the review schedule, streak freezes, damaged and old save files, and merging two saves.
+The engine has 40 tests. They cover the Bayes formula against hand-worked numbers, the lesson search that grounds Ask Pip (it must find the right lesson for every idea card and for real student questions), property checks over thousands of random cases, the review schedule, streak freezes, damaged and old save files, and merging two saves.
 
 ## How it fits together
 
