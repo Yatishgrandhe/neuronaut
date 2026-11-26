@@ -2,15 +2,19 @@
 
 import Link from "next/link";
 import { useRef, useState } from "react";
-import { Download, Flame, RotateCcw, Snowflake, Upload, Zap } from "lucide-react";
+import { ArrowRight, Download, Dumbbell, Flame, Play, Repeat2, RotateCcw, Snowflake, Sparkles, Upload, Zap } from "lucide-react";
 import {
   BADGES,
   MAX_FREEZES,
   dayKey,
   levelProgress,
+  masteryLabel,
+  masteryOf,
   moduleProgress,
   modules,
   recentDays,
+  recommendNext,
+  sampleProgress,
   visibleStreak,
   weekXp,
 } from "@neuronaut/core";
@@ -21,7 +25,7 @@ import { useProgress } from "./progress";
 const EPOCH = new Date(0);
 
 export function Dashboard() {
-  const { state, ready, exportJson, importJson, reset } = useProgress();
+  const { state, ready, exportJson, importJson, reset, setState } = useProgress();
   // Time-dependent values are computed only on the client (never during prerender).
   const now = ready ? new Date() : EPOCH;
   const fileRef = useRef<HTMLInputElement>(null);
@@ -35,6 +39,8 @@ export function Dashboard() {
   const lessonsDone = Object.keys(state.lessons).length;
   const totalLessons = modules.reduce((n, m) => n + m.lessons.length, 0);
   const earnedCount = BADGES.filter((b) => state.badges[b.id]).length;
+  const today = dayKey(now);
+  const rec = ready ? recommendNext(state, today) : null;
 
   const download = () => {
     const blob = new Blob([exportJson()], { type: "application/json" });
@@ -59,6 +65,23 @@ export function Dashboard() {
         </div>
         <Pip mood={lessonsDone ? "happy" : "idle"} size={96} />
       </header>
+
+      {rec ? <NextUp rec={rec} /> : null}
+      {ready && lessonsDone === 0 ? (
+        <p className="dash-sample">
+          Judging or just curious?{" "}
+          <button
+            type="button"
+            className="link-btn"
+            onClick={() => {
+              setState(sampleProgress());
+              setMsg("Sample progress loaded: six days of lessons, run through the real engine. Start over below to clear it.");
+            }}
+          >
+            <Sparkles size={16} aria-hidden /> Fill this page with sample progress
+          </button>
+        </p>
+      ) : null}
 
       <section className="dash-top" aria-label="Summary">
         <div className="dash-level">
@@ -99,6 +122,9 @@ export function Dashboard() {
         <div className="meter meter-lg goal-meter">
           <span style={{ width: `${Math.min(week / state.weeklyGoal, 1) * 100}%` }} />
         </div>
+        {week === 0 ? (
+          <p className="week-empty">No XP yet this week. One lesson earns about 75 XP, so the goal is two lessons away.</p>
+        ) : null}
         <ol className="bars" aria-label="XP earned on each of the last 7 days">
           {days.map((d) => {
             const date = new Date(`${d.day}T12:00:00`);
@@ -114,25 +140,49 @@ export function Dashboard() {
       </section>
 
       <section className="dash-modules" aria-labelledby="mod-h">
-        <h2 id="mod-h">Modules</h2>
-        <ul>
-          {modules.map((m) => {
-            const p = moduleProgress(state, m.id);
-            return (
-              <li key={m.id} data-color={m.color}>
-                <Link href={`/learn/${m.id}`}>
-                  <span className="dm-title">{m.title}</span>
-                  <span className="meter">
-                    <span style={{ width: `${(p.done / p.total) * 100}%` }} />
-                  </span>
-                  <span className="num dm-count">
-                    {p.done}/{p.total}
-                  </span>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
+        <div className="week-head">
+          <h2 id="mod-h">Skills</h2>
+          <Link href="/how-we-built-it#mastery" className="small">
+            How mastery is worked out
+          </Link>
+        </div>
+        <p className="dash-note">
+          Each lesson is one skill. The estimate rises with first-try answers, falls with misses, and fades if you haven&rsquo;t
+          practised it for a while.
+        </p>
+        {modules.map((m) => {
+          const p = moduleProgress(state, m.id);
+          return (
+            <div key={m.id} className="skill-mod">
+              <h3>
+                <Link href={`/learn/${m.id}`}>{m.title}</Link> <span className="num muted">{p.done}/{p.total} lessons</span>
+              </h3>
+              <ul className="skills">
+                {m.lessons.map((l) => {
+                  const started = state.mastery[l.id] !== undefined;
+                  const v = masteryOf(state, l.id, today);
+                  const label = masteryLabel(started ? v : undefined);
+                  return (
+                    <li key={l.id} data-level={label}>
+                      <span className="skill-name">{l.title}</span>
+                      <span
+                        className="meter"
+                        role="meter"
+                        aria-valuemin={0}
+                        aria-valuemax={100}
+                        aria-valuenow={started ? Math.round(v * 100) : 0}
+                        aria-label={`${l.title} mastery`}
+                      >
+                        <span style={{ width: `${started ? v * 100 : 0}%` }} />
+                      </span>
+                      <span className="skill-label">{started ? `${label} · ${Math.round(v * 100)}%` : label}</span>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          );
+        })}
       </section>
 
       <section className="dash-badges" aria-labelledby="bd-h">
@@ -197,5 +247,29 @@ export function Dashboard() {
         )}
       </section>
     </div>
+  );
+}
+
+function NextUp({ rec }: { rec: ReturnType<typeof recommendNext> }) {
+  const body =
+    rec.kind === "review"
+      ? { icon: <Repeat2 aria-hidden />, title: `${rec.count} question${rec.count > 1 ? "s" : ""} due for review`, why: "Reviewing on the day it's due is what makes it stick.", href: "/review", cta: "Start review" }
+      : rec.kind === "practice"
+        ? { icon: <Dumbbell aria-hidden />, title: `Practise ${rec.lesson.title}`, why: `Your mastery there is ${Math.round(rec.mastery * 100)}%, your lowest.`, href: "/practice", cta: "Practise now" }
+        : rec.kind === "lesson"
+          ? { icon: <Play aria-hidden />, title: rec.lesson.title, why: `Next new lesson, about ${rec.lesson.minutes} minutes.`, href: `/lesson/${rec.lesson.id}`, cta: "Start lesson" }
+          : { icon: <Sparkles aria-hidden />, title: "Everything is mastered", why: "Come back in a week: practice will bring back anything you start to forget.", href: "/learn", cta: "Browse lessons" };
+  return (
+    <section className="next-up" aria-labelledby="next-h">
+      <span className="next-icon">{body.icon}</span>
+      <div>
+        <p className="dash-label">Do this next</p>
+        <h2 id="next-h">{body.title}</h2>
+        <p className="next-why">{body.why}</p>
+      </div>
+      <Link className="btn btn-spark" href={body.href}>
+        {body.cta} <ArrowRight size={18} aria-hidden />
+      </Link>
+    </section>
   );
 }

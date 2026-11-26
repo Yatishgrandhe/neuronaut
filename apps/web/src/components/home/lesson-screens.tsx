@@ -37,9 +37,9 @@ function promptOf(e: Exercise): string {
 }
 
 const MODULE_COLOR: Record<ModuleId, string> = {
-  foundations: "var(--m1)",
-  toolkit: "var(--m2)",
-  ethics: "var(--m3)",
+  foundations: "var(--accent)",
+  toolkit: "var(--accent)",
+  ethics: "var(--accent)",
 };
 
 const DUE = ["in 1 day", "in 3 days", "in 7 days"];

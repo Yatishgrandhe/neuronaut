@@ -86,7 +86,8 @@ export interface ReviewItem {
 }
 
 export interface ProgressState {
-  version: 1;
+  /** Schema version. Version 1 saves are migrated on load (see parseProgress). */
+  version: 2;
   xp: number;
   lessons: Record<string, LessonRecord>;
   streak: {
@@ -100,6 +101,16 @@ export interface ProgressState {
   /** XP earned per local day, `YYYY-MM-DD` → xp. Trimmed to the last 60 days. */
   history: Record<string, number>;
   weeklyGoal: number;
+  /** BKT estimate P(known) per lesson id, 0–1. Missing = not started. */
+  mastery: Record<string, number>;
+  /** Day (`YYYY-MM-DD`) each lesson's estimate was last updated, for the forgetting curve. */
+  masterySeen: Record<string, string>;
+  stats: {
+    /** Review questions answered right on the first try, all time. */
+    reviewCorrect: number;
+    /** Practice questions answered, all time. */
+    practiceAnswered: number;
+  };
   updatedAt: string;
 }
 

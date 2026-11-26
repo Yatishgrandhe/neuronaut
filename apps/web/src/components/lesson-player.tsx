@@ -9,6 +9,7 @@ import {
   getModule,
   isLessonUnlocked,
   levelProgress,
+  XP,
   type ProgressEvent,
 } from "@neuronaut/core";
 import { Pip } from "./brand";
@@ -95,6 +96,7 @@ export function LessonPlayer({ lessonId }: { lessonId: string }) {
         items={lesson.exercises.map((e) => ({ key: `${lesson.id}:${e.id}`, exercise: e }))}
         exitHref={`/learn/${mod.id}`}
         onFinish={finish}
+        xp={state.lessons[lesson.id] ? undefined : { first: XP.correctFirstTry, retry: XP.correctAfterRetry }}
       />
     );
   }

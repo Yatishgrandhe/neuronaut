@@ -7,7 +7,6 @@ import { StringOutputParser } from "@langchain/core/output_parsers";
 import { ChatPromptTemplate, MessagesPlaceholder } from "@langchain/core/prompts";
 import { BaseRetriever } from "@langchain/core/retrievers";
 import { RunnableSequence } from "@langchain/core/runnables";
-import { z } from "zod";
 import { allLessons, getLesson, modules } from "@neuronaut/core";
 
 /** Default model per Anthropic's current guidance. */
@@ -144,59 +143,3 @@ export async function tutorStream(input: { question: string; history: ChatTurn[]
 /* ------------------------------------------------------------------ */
 /* Practice generator: structured output (native JSON schema mode)     */
 /* ------------------------------------------------------------------ */
-
-export const PracticeSet = z.object({
-  questions: z
-    .array(
-      z.object({
-        prompt: z.string().describe("The question, one or two sentences, for a high school student."),
-        options: z.array(z.string()).describe("Exactly 4 answer options, each under 90 characters."),
-        answer: z.number().int().describe("Index (0-3) of the single correct option."),
-        explain: z.string().describe("One or two sentences explaining why the answer is right."),
-      }),
-    )
-    .describe("Exactly 3 new multiple-choice questions."),
-});
-export type PracticeSet = z.infer<typeof PracticeSet>;
-
-const practicePrompt = ChatPromptTemplate.fromMessages([
-  [
-    "system",
-    `You write practice questions for Neuronaut, an AI-literacy course for high school students.
-Write exactly 3 NEW multiple-choice questions (4 options each, one correct) that check understanding of the lesson below.
-- Test understanding and application, not trivia or wording recall. Use realistic school scenarios.
-- Don't repeat the existing questions. Keep facts accurate and avoid made-up statistics or names of real studies.
-- Wrong options should be plausible but clearly wrong once you understand the lesson.
-
-Lesson: {title}
-Summary: {summary}
-
-Ideas taught:
-{ideas}
-
-Existing questions (don't repeat):
-{existing}`,
-  ],
-  ["human", "Write the 3 questions."],
-]);
-
-export async function generatePractice(lessonId: string): Promise<PracticeSet> {
-  const lesson = getLesson(lessonId);
-  if (!lesson) throw new Error("Unknown lesson");
-  const structured = model({ maxTokens: 4000, effort: "medium" }).withStructuredOutput(PracticeSet, {
-    name: "practice_set",
-    method: "jsonSchema",
-  });
-  const result = await practicePrompt.pipe(structured).invoke({
-    title: lesson.title,
-    summary: lesson.summary,
-    ideas: lesson.cards.map((c) => `- ${c.title}: ${c.body}`).join("\n"),
-    existing: lesson.exercises.map((e) => `- ${e.kind === "truefalse" ? e.statement : e.prompt}`).join("\n"),
-  });
-  // Validate shape the schema can't express (exact counts, answer in range).
-  const questions = result.questions
-    .filter((q) => q.options.length === 4 && q.answer >= 0 && q.answer < 4)
-    .slice(0, 3);
-  if (!questions.length) throw new Error("No valid questions generated");
-  return { questions };
-}

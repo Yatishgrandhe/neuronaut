@@ -88,7 +88,8 @@ export function LessonStory() {
                 aria-hidden={active === i ? undefined : true}
                 width={W}
                 height={H}
-                loading="lazy"
+                loading={i === 0 ? "eager" : "lazy"}
+                fetchPriority="low"
                 decoding="async"
                 data-on={active === i}
               />

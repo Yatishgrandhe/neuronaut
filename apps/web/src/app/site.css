@@ -28,8 +28,8 @@
 .node:hover { text-decoration: none; }
 .node:active { transform: translateY(4px); box-shadow: 0 1px 0 color-mix(in srgb, var(--mc) 70%, black); }
 .node svg { width: 28px; height: 28px; }
-.node[data-status="done"] { background: var(--sun-fill); box-shadow: 0 5px 0 #c77700; }
-.node[data-status="locked"] { background: #e3e3e8; color: #9c968c; box-shadow: 0 5px 0 #d1d1d6; }
+.node[data-status="done"] { background: var(--leaf); box-shadow: 0 5px 0 color-mix(in srgb, var(--leaf) 70%, black); }
+.node[data-status="locked"] { background: #e9e6df; color: #6b6b6b; box-shadow: 0 5px 0 #d6d1c7; }
 .node[data-current="true"] { outline: 3px solid var(--mc); outline-offset: 5px; }
 .node-title { font-weight: 600; font-size: 15px; max-width: 18ch; text-align: center; }
 .node-pip { position: absolute; left: calc(100% + 16px); top: -6px; display: grid; justify-items: center; gap: 4px; }
@@ -177,9 +177,9 @@
 .stat-xp { --tone: var(--sun); } .stat-acc { --tone: var(--leaf); } .stat-streak { --tone: var(--spark); }
 .done-note { color: var(--ink-64); font-size: 15px; }
 .level-row { display: flex; align-items: center; gap: 12px; width: 100%; margin-top: 12px; }
-.level-badge { font-weight: 700; font-size: 14px; padding: 5px 10px; border-radius: 8px; background: var(--blue-soft); color: var(--blue); }
-.level-row .meter { --mc: var(--blue); }
-.level-up { font-weight: 700; color: var(--blue); animation: pop 400ms var(--ease-out); }
+.level-badge { font-weight: 700; font-size: 14px; padding: 5px 10px; border-radius: 8px; background: var(--spark-soft); color: var(--accent-ink); }
+.level-row .meter { --mc: var(--accent); }
+.level-up { font-weight: 700; color: var(--accent-ink); animation: pop 400ms var(--ease-out); }
 .new-badges { width: 100%; margin-top: 20px; text-align: left; }
 .new-badges h2 { font-size: 20px; text-align: center; }
 .new-badges ul { list-style: none; padding: 0; margin: 14px 0 0; display: grid; gap: 10px; }
@@ -204,7 +204,7 @@
 .dash-head { grid-template-columns: 1fr auto; align-items: end; }
 .dash-top { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 14px; }
 .dash-level, .dash-tile, .dash-week, .dash-modules, .dash-badges, .dash-data { padding: 28px; border-radius: var(--radius); background: var(--paper-2); }
-.dash-level { --mc: var(--blue); }
+.dash-level { --mc: var(--accent); }
 .dash-label { font-weight: 600; color: var(--ink-64); font-size: 15px; }
 .dash-big { font: 800 clamp(44px, 5vw, 60px) var(--font-display); letter-spacing: -0.012em; line-height: 1; margin: 8px 0 12px; }
 .dash-sub { margin-top: 8px; color: var(--ink-64); font-size: 15px; }
@@ -336,13 +336,15 @@
 
 
 /* ============================== TSA documentation pages ============================== */
-.doc { padding: 48px 0 88px; }
+.doc { padding-block: 48px 88px; }
+.doc-note { margin-top: 14px; padding: 12px 16px; border-radius: var(--r-inner); background: var(--paper-2); font-family: var(--font-ui); font-size: 15px; max-width: 46em; }
 .doc-head { max-width: 46em; }
 .doc-head h1 { font-size: clamp(36px, 5vw, 52px); letter-spacing: -0.012em; line-height: 1.1; }
 .doc-head .lede { margin-top: 14px; }
 .doc-actions { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; margin-top: 20px; font-family: var(--font-ui); }
 .doc-actions a { min-height: 44px; display: inline-flex; align-items: center; gap: 8px; color: var(--link); text-underline-offset: 3px; }
 .doc h2 { font-size: clamp(24px, 2.6vw, 30px); letter-spacing: -0.01em; margin: 48px 0 12px; }
+.doc h3 { font-size: 20px; letter-spacing: -0.01em; margin: 28px 0 6px; }
 .doc p, .doc li { max-width: 65ch; line-height: 1.6; }
 .doc-table-wrap { overflow-x: auto; margin-top: 16px; border: 1px solid var(--line); border-radius: var(--r-inner); }
 .doc-table { width: 100%; border-collapse: collapse; font-family: var(--font-ui); font-size: 15px; line-height: 1.45; }
@@ -404,3 +406,68 @@ body:has(.runner-foot) .lesson-sources { display: none; }
 .prose p a, .prose li a, .about-intro a, .ha-note a, .tutor-note a {
   text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px;
 }
+
+/* ===================== Dashboard: next up, skills, sample ===================== */
+.next-up {
+  display: grid; grid-template-columns: auto 1fr auto; gap: 20px; align-items: center;
+  padding: 24px 28px; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--line);
+  box-shadow: inset 4px 0 0 var(--accent);
+}
+.next-icon { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 14px; background: var(--spark-soft); color: var(--accent-ink); }
+.next-icon svg { width: 26px; height: 26px; }
+.next-up h2 { font-size: clamp(22px, 2.4vw, 27px); letter-spacing: -0.012em; margin: 2px 0 0; }
+.next-why { margin: 4px 0 0; color: var(--ink-64); }
+.dash-sample { margin: 0; color: var(--ink-64); font-size: 15px; }
+.link-btn {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0; border: 0; background: none;
+  font: inherit; font-weight: 600; color: var(--accent-ink); text-decoration: underline; text-underline-offset: 4px; cursor: pointer;
+}
+.week-empty { margin: 0 0 12px; color: var(--ink-64); font-size: 15px; }
+.dash-note { margin: 6px 0 0; color: var(--ink-64); font-size: 15px; max-width: 62ch; }
+.skill-mod { margin-top: 24px; }
+.skill-mod h3 { font-size: 18px; margin: 0; display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap; }
+.skill-mod h3 a { color: var(--ink); }
+.skill-mod h3 .muted { font-size: 14px; }
+.dash-modules .skills { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 0; }
+.skills li {
+  display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) 150px; gap: 16px; align-items: center;
+  padding: 12px 0; border-top: 1px solid var(--line);
+}
+.skill-name { font-weight: 600; }
+.skill-label { font-size: 14px; font-weight: 600; color: var(--ink-64); text-align: right; }
+.skills li .meter { --mc: var(--accent); }
+.skills li[data-level="Mastered"] .meter { --mc: var(--leaf); }
+.skills li[data-level="Mastered"] .skill-label { color: var(--leaf); }
+.badge-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+/* Practice result */
+.practice-result { width: 100%; max-width: 520px; }
+.mastery-changes { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 8px; text-align: left; }
+.mastery-changes li { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 10px 14px; border-radius: 12px; background: var(--surface); }
+.mastery-changes [data-up="true"] { color: var(--leaf); font-weight: 600; }
+.mastery-changes [data-up="false"] { color: var(--accent-ink); font-weight: 600; }
+.mastery-changes svg { vertical-align: -3px; }
+.small { font-size: 15px; }
+@media (max-width: 700px) {
+  .next-up { grid-template-columns: auto 1fr; padding: 20px; }
+  .next-up .btn { grid-column: 1 / -1; justify-content: center; }
+  .skills li { grid-template-columns: 1fr auto; gap: 6px 12px; }
+  .skills li .meter { grid-column: 1 / -1; grid-row: 2; }
+}
+/* Phones: one row per badge (icon left, words right), so nine badges never leave an orphan. */
+@media (max-width: 560px) {
+  .badge-grid { grid-template-columns: 1fr; gap: 8px; }
+  .badge-grid li { grid-template-columns: 56px 1fr; grid-template-rows: auto auto; justify-items: start; text-align: left; column-gap: 14px; row-gap: 2px; padding: 14px 16px; }
+  .badge-grid li > :first-child { grid-row: 1 / span 2; align-self: center; width: 56px; height: 56px; }
+  .badge-grid .badge-name, .badge-grid .badge-desc { margin: 0; }
+}
+
+/* Runner footer: hint + Pip beside the Check button, XP on a right answer */
+.runner-hint { display: flex; align-items: center; gap: 12px; color: var(--ink-64); font-size: 15px; }
+.runner-hint p { margin: 0; }
+.fb-xp { margin-left: 8px; padding: 2px 8px; border-radius: 999px; background: var(--surface); color: var(--leaf); font: 700 14px var(--font-ui); }
+@media (max-width: 560px) { .runner-hint > :first-child { display: none; } }
+.review-actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+/* The Skills list replaced the old module links: undo their grid/padding for plain links inside it. */
+.dash-modules .skill-mod h3 a, .dash-modules .week-head a { display: inline; padding: 0; border-radius: 0; }
+.dash-modules .week-head a { color: var(--link); text-decoration: underline; text-underline-offset: 3px; }
+.dash-modules .skill-mod h3 a:hover { background: none; text-decoration: underline; }

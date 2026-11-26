@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useSyncExternalStore, type ReactNode } from "react";
-import { createProgress, parseProgress, type ProgressState } from "@neuronaut/core";
+import { createProgress, mergeProgress, parseProgress, type ProgressState } from "@neuronaut/core";
 
 const KEY = "neuronaut.progress.v1";
 const SERVER_STATE = createProgress(new Date(0));
@@ -80,8 +80,10 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       importJson: (text: string) => {
         try {
           const parsed = JSON.parse(text);
-          if (!parsed || (parsed.app !== "neuronaut" && parsed.version !== 1)) return false;
-          write(parseProgress(parsed.progress ?? parsed));
+          const raw = parsed?.app === "neuronaut" ? parsed.progress : parsed;
+          if (!raw || (raw.version !== 1 && raw.version !== 2)) return false;
+          // Merge, never overwrite: importing an old backup can't wipe newer progress here.
+          write(mergeProgress(read(), parseProgress(raw)));
           return true;
         } catch {
           return false;

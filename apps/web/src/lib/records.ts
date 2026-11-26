@@ -128,6 +128,16 @@ export const ASSETS: Asset[] = [
   },
 ];
 
+ASSETS.push({
+  item: "Knowledge tracing (the mastery model's method)",
+  kind: "Curriculum reference",
+  creator: "Albert Corbett and John Anderson, 1995",
+  source: "https://doi.org/10.1007/BF01099821",
+  license: "Published research, cited not copied",
+  howUsed: "The Bayesian Knowledge Tracing method behind the Skills estimates and Practice. Our code is our own implementation.",
+  permission: "Ideas and formulas are not copyrighted; the paper is cited.",
+});
+
 export interface LogEntry {
   date: string; // ISO date
   task: string;
@@ -197,5 +207,13 @@ export const WORK_LOG: LogEntry[] = [
     who: null,
     minutes: null,
     ai: "AI-assisted (Claude Code); measurements from Chrome DevTools.",
+  },
+  {
+    date: "2026-11-26",
+    task: "Learning engine for Software Development",
+    detail: "Added a mastery model (Bayesian Knowledge Tracing with a 21-day forgetting curve), adaptive Practice that picks questions from the weakest lessons, a \"Do this next\" recommendation and a Skills view on the dashboard. Save format moved to version 2 with a migration. Engine tests went from 7 to 28 and found two merge bugs, both fixed. Removed an unused AI practice-question route.",
+    who: null,
+    minutes: null,
+    ai: "AI-assisted (Claude Code); five AI role-play reviewers suggested the changes.",
   },
 ];

@@ -96,8 +96,8 @@
   min-width: 3.2em;
   text-align: center;
   font-weight: 600;
-  color: var(--m1);
-  border-bottom: 2px solid var(--m1);
+  color: var(--accent-ink);
+  border-bottom: 2px solid var(--accent);
 }
 
 .cc-cands {
@@ -148,7 +148,7 @@
 }
 
 .cc-bar-fill[data-top="true"] {
-  background: var(--m1);
+  background: var(--accent);
 }
 
 /* Module 2: weak prompt struck out, better prompt fades in */

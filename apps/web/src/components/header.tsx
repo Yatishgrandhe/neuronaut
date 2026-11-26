@@ -11,6 +11,7 @@ import { useProgress } from "./progress";
 
 const NAV = [
   { href: "/learn", label: "Learn" },
+  { href: "/practice", label: "Practice" },
   { href: "/review", label: "Review" },
   { href: "/ask", label: "Ask Pip" },
   { href: "/dashboard", label: "Progress" },

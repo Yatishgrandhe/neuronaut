@@ -12,6 +12,8 @@ const fmt = (iso: string) =>
   new Date(`${iso}T12:00:00Z`).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
 
 export default function WorkLogPage() {
+  const hasWho = WORK_LOG.some((e) => e.who);
+  const hasTime = WORK_LOG.some((e) => e.minutes != null);
   return (
     <article className="wrap doc">
       <header className="doc-head">
@@ -20,6 +22,12 @@ export default function WorkLogPage() {
           What we did, when, and where AI helped. Newest entries are at the bottom. How the pieces fit together is on{" "}
           <Link href="/how-we-built-it">How we built it</Link>.
         </p>
+        {!hasWho || !hasTime ? (
+          <p className="doc-note">
+            <strong>Before submission:</strong> the team adds who did each task and how long it took. Those columns appear
+            here automatically once they are filled in.
+          </p>
+        ) : null}
         <p className="doc-actions">
           <a href="/docs/student-work-log.pdf" download>
             <Download size={18} aria-hidden /> Download as PDF
@@ -34,8 +42,8 @@ export default function WorkLogPage() {
               <th scope="col">Date</th>
               <th scope="col">Task</th>
               <th scope="col">What happened</th>
-              <th scope="col">Who</th>
-              <th scope="col">Time</th>
+              {hasWho ? <th scope="col">Who</th> : null}
+              {hasTime ? <th scope="col">Time</th> : null}
               <th scope="col">AI use</th>
             </tr>
           </thead>
@@ -47,9 +55,9 @@ export default function WorkLogPage() {
                 </td>
                 <td data-label="Task">{e.task}</td>
                 <td data-label="What">{e.detail}</td>
-                <td data-label="Who">{e.who ?? <span className="doc-gap">{TEAM_GAP}</span>}</td>
-                <td data-label="Time">{e.minutes != null ? `${e.minutes} min` : <span className="doc-gap">{TEAM_GAP}</span>}</td>
-                <td data-label="AI use">{e.ai ?? <span className="doc-gap">{TEAM_GAP}</span>}</td>
+                {hasWho ? <td data-label="Who">{e.who ?? <span className="doc-gap">{TEAM_GAP}</span>}</td> : null}
+                {hasTime ? <td data-label="Time">{e.minutes != null ? `${e.minutes} min` : <span className="doc-gap">{TEAM_GAP}</span>}</td> : null}
+                <td data-label="AI use">{e.ai ?? <span className="doc-gap">Team to confirm</span>}</td>
               </tr>
             ))}
           </tbody>

@@ -47,8 +47,9 @@
   --spark: var(--accent);
   --spark-fill: #e8501f;
   --spark-soft: #fdeee8;
-  --blue: var(--m1);
-  --blue-soft: #e8f1fc;
+  /* "Selected" state: neutral ink, not a second accent colour. */
+  --blue: var(--ink);
+  --blue-soft: var(--paper-2);
   --leaf: #1a8a4a;
   --leaf-soft: #e8f6ee;
   --sun: #b25000;

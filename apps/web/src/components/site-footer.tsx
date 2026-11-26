@@ -34,6 +34,7 @@ const COLUMNS: Col[] = [
     id: "ft-practice",
     title: "Practice",
     links: [
+      { href: "/practice", label: "Practice" },
       { href: "/review", label: "Review" },
       { href: "/ask", label: "Ask Pip" },
       { href: "/dashboard", label: "Progress" },

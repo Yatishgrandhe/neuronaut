@@ -29,7 +29,18 @@ function buzz(pattern: number | number[]) {
 }
 
 /** Runs a sequence of exercises with instant feedback and unlimited retries. */
-export function Runner({ items, exitHref, onFinish }: { items: RunItem[]; exitHref: string; onFinish: (r: RunResult[]) => void }) {
+export function Runner({
+  items,
+  exitHref,
+  onFinish,
+  xp,
+}: {
+  items: RunItem[];
+  exitHref: string;
+  onFinish: (r: RunResult[]) => void;
+  /** XP shown on a right answer, matching what the engine will award. */
+  xp?: { first: number; retry: number };
+}) {
   const [i, setI] = useState(0);
   const [answer, setAnswer] = useState<Answer | null>(null);
   const [verdict, setVerdict] = useState<"right" | "wrong" | null>(null);
@@ -93,16 +104,27 @@ export function Runner({ items, exitHref, onFinish }: { items: RunItem[]; exitHr
       <div className={`runner-foot ${verdict ? `is-${verdict}` : ""}`} aria-live="polite">
         <div className="wrap-narrow runner-foot-row">
           {verdict === null && (
-            <button type="button" className="btn btn-spark btn-lg runner-cta" disabled={!answer} onClick={check}>
-              Check
-            </button>
+            <>
+              <div className="runner-hint">
+                <Pip mood="idle" size={48} />
+                <p>{answer ? "Ready? Press Check." : "Pick an answer, then press Check."}</p>
+              </div>
+              <button type="button" className="btn btn-spark btn-lg runner-cta" disabled={!answer} onClick={check}>
+                Check
+              </button>
+            </>
           )}
           {verdict === "right" && (
             <>
               <div className="feedback">
                 <CheckCircle2 className="fb-icon" aria-hidden />
                 <div>
-                  <p className="fb-title">{PRAISE[(i + attempt) % PRAISE.length]}</p>
+                  <p className="fb-title">
+                    {PRAISE[(i + attempt) % PRAISE.length]}
+                    {xp && (attempt ? xp.retry : xp.first) > 0 ? (
+                      <span className="fb-xp num"> +{attempt ? xp.retry : xp.first} XP</span>
+                    ) : null}
+                  </p>
                   <p className="fb-explain">{item.exercise.explain}</p>
                 </div>
               </div>
@@ -128,9 +150,6 @@ export function Runner({ items, exitHref, onFinish }: { items: RunItem[]; exitHr
         </div>
       </div>
 
-      <div className="runner-pip" aria-hidden>
-        <Pip mood={verdict === "right" ? "happy" : verdict === "wrong" ? "think" : "idle"} size={72} />
-      </div>
     </div>
   );
 }

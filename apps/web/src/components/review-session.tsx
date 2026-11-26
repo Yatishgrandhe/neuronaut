@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { ArrowRight, CalendarClock, Repeat2 } from "lucide-react";
+import { ArrowRight, CalendarClock, Dumbbell, Repeat2 } from "lucide-react";
 import { completeReview, dayKey, dueReviewKeys, resolveReviewKey } from "@neuronaut/core";
 import { Pip } from "./brand";
 import { useProgress } from "./progress";
@@ -22,6 +22,7 @@ export function ReviewSession() {
       <Runner
         items={items}
         exitHref="/review"
+        xp={{ first: 5, retry: 0 }}
         onFinish={(results) => {
           const r = completeReview(state, results.map((x) => ({ key: x.key, correct: !x.retried })));
           setState(r.state);
@@ -74,12 +75,19 @@ export function ReviewSession() {
                   {new Date(`${nextDue}T12:00:00`).toLocaleDateString(undefined, { weekday: "long", month: "short", day: "numeric" })}.
                 </>
               ) : (
-                "Any question you miss in a lesson will show up here."
+                "Any question you miss in a lesson or in practice shows up here, then comes back after 1, 3, 7 and 16 days."
               )}
             </p>
-            <Link className="btn btn-ghost btn-lg" href="/learn">
-              Keep learning <ArrowRight size={20} aria-hidden />
-            </Link>
+            <div className="review-actions">
+              {Object.keys(state.lessons).length ? (
+                <Link className="btn btn-spark btn-lg" href="/practice">
+                  <Dumbbell size={20} aria-hidden /> Practise instead
+                </Link>
+              ) : null}
+              <Link className="btn btn-ghost btn-lg" href="/learn">
+                Keep learning <ArrowRight size={20} aria-hidden />
+              </Link>
+            </div>
           </>
         )}
       </div>

@@ -1,9 +1,9 @@
 /* Site chrome: nav, menu sheet, intro, route bar, shared Card / Annotation / Pip styles. */
 
 /* ---------- Shared bits the app screens still use ---------- */
-[data-color="ink"] { --mc: var(--m1); --mc-soft: var(--blue-soft); }
-[data-color="spark"] { --mc: var(--m2); --mc-soft: var(--spark-soft); }
-[data-color="leaf"] { --mc: var(--leaf); --mc-soft: var(--leaf-soft); }
+/* One accent across the product (design decision): modules are told apart by number and name,
+   not colour. Green is kept for "right" and "mastered", red for "wrong". */
+[data-color] { --mc: var(--accent); --mc-soft: var(--spark-soft); }
 .module-step { font-family: var(--font-ui); font-weight: 600; color: var(--mc, var(--accent)); font-size: 15px; }
 .bubble { max-width: 260px; padding: 10px 14px; border-radius: 16px; background: var(--paper-2); font-size: 15px; line-height: 1.35; text-align: center; }
 .bubble-sm { padding: 6px 10px; font: 600 13px var(--font-ui); white-space: nowrap; background: var(--ink); color: var(--paper); border-radius: 10px; }
