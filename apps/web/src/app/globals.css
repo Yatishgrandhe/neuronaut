@@ -1,0 +1,211 @@
+/* Neuronaut — "the fact-checker's notebook".
+   Warm paper, ink, and one idea: an orange teacher's-pen annotation layer.
+   No gradients as visuals, no glass outside the nav, one shadow per surface. */
+
+:root {
+  color-scheme: light dark;
+  /* Part 2 tokens */
+  --ink: #1d1d1f;
+  --ink-2: #6b6760;
+  --ink-3: #6f6a62;
+  --paper: #ffffff;
+  --paper-2: #f3f0ea;
+  --paper-warm: #fbf7f2;
+  --line: rgb(60 45 30 / 0.12);
+  --accent: #c2410c;
+  --accent-ink: #9a3412;
+  --good: #1f9d55;
+  --bad: #d70015;
+  --m1: #0071e3;
+  --m2: #c2410c;
+  --m3: #1f9d55;
+  --night: #000000;
+  --night-2: #1d1d1f;
+  --sh-1: 0 1px 3px rgb(40 30 20 / 0.07);
+  --sh-2: 0 10px 28px -8px rgb(40 30 20 / 0.14);
+  --sh-3: 0 24px 48px -16px rgb(40 30 20 / 0.2);
+  --r-card: 16px;
+  --r-inner: 14px;
+  --nav-h: 52px;
+  --pad: clamp(20px, 5vw, 48px);
+  --sec-pad: clamp(72px, 9vw, 120px);
+  --head-gap: clamp(32px, 4vw, 56px);
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  /* Editorial type: Georgia for headings and reading text; a quiet sans for small UI chrome. */
+  --font-text: var(--font-gelasio), Georgia, "Times New Roman", serif;
+  --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-display: var(--font-gelasio), Georgia, "Times New Roman", serif;
+  --font-note: var(--font-caveat), "Caveat", cursive;
+
+  /* Aliases used by the app screens (learn, lesson, dashboard…) */
+  --ink-64: var(--ink-2);
+  --ink-80: rgb(29 29 31 / 0.82);
+  --fill: rgb(120 120 128 / 0.12);
+  --surface: #ffffff;
+  --surface-2: var(--paper-2);
+  --link: var(--accent-ink);
+  --spark: var(--accent);
+  --spark-fill: #e8501f;
+  --spark-soft: #fdeee8;
+  --blue: var(--m1);
+  --blue-soft: #e8f1fc;
+  --leaf: #1a8a4a;
+  --leaf-soft: #e8f6ee;
+  --sun: #b25000;
+  --sun-fill: #ff9f0a;
+  --sun-soft: #fff4e5;
+  --danger: var(--bad);
+  --danger-soft: #fdecee;
+  --on-accent: #ffffff;
+  --glass: rgb(255 255 255 / 0.72);
+  --glass-filter: saturate(180%) blur(20px);
+  --glass-edge: rgb(0 0 0 / 0.06);
+  --shadow-float: var(--sh-2);
+  --radius: var(--r-card);
+  --radius-sm: var(--r-inner);
+  --ease-out: var(--ease);
+  --ease-apple: var(--ease);
+  --ease-draw: cubic-bezier(0.22, 0.6, 0.35, 1);
+  --ease-spring: cubic-bezier(0.32, 0.72, 0, 1);
+  --font-body: var(--font-text);
+  --hair: 1px;
+}
+
+/* Dark theme: the same tokens, redefined. The accent stays #c2410c for filled buttons (white text
+   keeps 5.2:1); text links use the lighter --accent-ink so they pass 4.5:1 on the dark paper. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ink: #ece8e1;
+    --ink-2: #b3ada3;
+    --ink-3: #a8a297;
+    --paper: #161514;
+    --paper-2: #201e1c;
+    --paper-warm: #1b1a18;
+    --line: rgb(236 232 225 / 0.14);
+    --accent-ink: #f6a57d;
+    --good: #4cc47f;
+    --bad: #ff6b6b;
+    --night-2: #0c0b0a;
+    --sh-1: 0 1px 3px rgb(0 0 0 / 0.4);
+    --sh-2: 0 10px 28px -8px rgb(0 0 0 / 0.55);
+    --sh-3: 0 24px 48px -16px rgb(0 0 0 / 0.65);
+    --ink-80: rgb(236 232 225 / 0.86);
+    --fill: rgb(236 232 225 / 0.1);
+    --surface: #201e1c;
+    --spark-soft: #3a2116;
+    --blue: #6aa8ff;
+    --m1: #6aa8ff;
+    --m3: #4cc47f;
+    --blue-soft: #16273d;
+    --leaf: #4cc47f;
+    --leaf-soft: #12291b;
+    --sun-soft: #33260f;
+    --danger: #ff6b6b;
+    --danger-soft: #3a1618;
+    --glass: rgb(22 21 20 / 0.92);
+    --glass-edge: rgb(255 255 255 / 0.08);
+  }
+}
+@media (max-width: 767px) {
+  :root { --r-card: 20px; --nav-h: 48px; }
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-text);
+  font-size: clamp(16px, 0.2vw + 15.3px, 17px);
+  line-height: 1.6;
+  letter-spacing: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+img { display: block; max-width: 100%; height: auto; }
+a { color: var(--accent-ink); text-decoration: none; }
+a:hover { text-decoration: underline; text-underline-offset: 0.18em; }
+::selection { background: rgb(194 65 12 / 0.18); color: var(--ink); }
+:root { caret-color: #c2410c; accent-color: #c2410c; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin: 0;
+  text-wrap: balance;
+}
+p { margin: 0; text-wrap: pretty; }
+button { font: inherit; color: inherit; letter-spacing: inherit; }
+.num { font-variant-numeric: tabular-nums; }
+#main { overflow-x: clip; }
+
+.wrap { width: 100%; max-width: calc(1200px + 2 * var(--pad)); margin-inline: auto; padding-inline: max(var(--pad), env(safe-area-inset-left)) max(var(--pad), env(safe-area-inset-right)); }
+.wrap-narrow { width: min(680px, 100% - 40px); margin-inline: auto; }
+.skip { position: absolute; left: 16px; top: -64px; z-index: 300; background: var(--ink); color: var(--paper); padding: 8px 16px; border-radius: 980px; font-weight: 600; }
+.skip:focus { top: 12px; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Type scale */
+.t-display { font-size: clamp(44px, 6.4vw, 96px); font-weight: 700; letter-spacing: -0.015em; line-height: 1.08; }
+.t-h2, .section-h { font-size: clamp(34px, 4.6vw, 64px); font-weight: 700; letter-spacing: -0.012em; line-height: 1.12; max-width: 20ch; }
+.t-h3 { font-size: clamp(24px, 2vw, 32px); font-weight: 700; letter-spacing: -0.01em; line-height: 1.15; }
+.t-lead, .lede, .section-sub { font-size: clamp(18px, 1.2vw + 12px, 22px); line-height: 1.5; letter-spacing: 0; color: var(--ink-2); max-width: 60ch; }
+.t-caption { font-size: clamp(13px, 0.2vw + 12.5px, 14px); color: var(--ink-3); }
+.note { font-family: var(--font-note); font-weight: 600; color: var(--accent); line-height: 1.1; }
+
+/* ----- Buttons (components/ui/Button.tsx) ----- */
+.btn {
+  --b: var(--accent);
+  --f: #fff;
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  min-height: 44px; padding: 14px 26px;
+  border: 0; border-radius: 10px;
+  background: var(--b); color: var(--f);
+  font-family: var(--font-ui); font-weight: 500; font-size: 17px; letter-spacing: -0.015em; line-height: 1.1;
+  text-decoration: none; cursor: pointer; white-space: nowrap;
+  transition: transform 150ms var(--ease), filter 150ms ease, opacity 150ms ease;
+}
+.btn:hover { text-decoration: none; filter: brightness(1.08); }
+.btn:active { transform: scale(0.97); }
+.btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 10px; }
+.btn:disabled { opacity: 0.32; cursor: not-allowed; transform: none; filter: none; }
+.btn-primary, .btn-spark { --b: var(--accent); --f: #fff; }
+.btn-inverse, .btn-white { --b: #fff; --f: #1d1d1f; }
+.btn-inverse:focus-visible, .btn-white:focus-visible { outline-color: #fff; }
+.btn-dark { --b: var(--ink); --f: var(--paper); }
+.btn-leaf { --b: var(--leaf); --f: #fff; }
+.btn-blue { --b: var(--m1); --f: #fff; }
+.btn-ghost { --b: var(--fill); --f: var(--ink); }
+.btn-ghost:hover { filter: none; background: rgb(120 120 128 / 0.2); }
+.btn-sm { min-height: 44px; padding: 10px 16px; font-size: 15px; }
+.btn-lg { min-height: 48px; }
+.btn-block { width: 100%; }
+.btn-secondary, .chev-link {
+  display: inline-flex; align-items: center; gap: 4px; min-height: 44px;
+  font-size: 17px; color: var(--accent-ink); background: none; border: 0; padding: 0; cursor: pointer; font-family: var(--font-ui);
+}
+.btn-secondary::after, .chev-link::after { content: "›"; font-size: 1.15em; line-height: 1; transform: translateY(-0.04em); transition: transform 200ms var(--ease); }
+.btn-secondary:hover::after, .chev-link:hover::after { transform: translate(3px, -0.04em); }
+.btn-secondary.on-dark, .chev-link.on-dark { color: #fff; }
+
+/* Skeleton shimmer: paper-2 base with a moving 20% white highlight. */
+.skel {
+  display: inline-block; border-radius: 8px; color: transparent !important;
+  background: linear-gradient(90deg, transparent 0%, rgb(255 255 255 / 0.2) 50%, transparent 100%) var(--paper-2);
+  background-size: 200% 100%; background-repeat: no-repeat;
+  animation: shimmer 1.4s linear infinite;
+}
+.skel * { visibility: hidden; }
+@keyframes shimmer { from { background-position: 150% 0; } to { background-position: -50% 0; } }
+@media (prefers-reduced-motion: reduce) { .skel { animation: none; } }
+
+* { scrollbar-color: rgb(60 45 30 / 0.28) transparent; scrollbar-width: thin; }
+
+/* Small UI chrome keeps a crisp sans next to the Georgia text. */
+.site-header, .menu-sheet, .chip, .pill, .pc-tag, .pc-key, .option-key, .hs, .tk,
+.mod-d, .card-step, .runner-count, .level-badge, .bar-val, .bar-day, .sample-tag, .xp-flyer,
+input, textarea, select { font-family: var(--font-ui); }

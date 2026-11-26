@@ -1,0 +1,8 @@
+# Local build output and working files: not needed to build or run the site.
+apps/web/planet/target
+apps/web/screenshots
+apps/web/.next
+graphify-out
+**/node_modules
+.env*
+.vercel

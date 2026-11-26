@@ -1,0 +1,150 @@
+/* Home page sections 2–5. Each section has its own vertical padding and its own layout:
+   ruled list, sticky story, split panel, two-column definition list. */
+:root {
+  --pad-cl: clamp(64px, 8vw, 104px);
+  --pad-ls: clamp(56px, 9vw, 128px);
+  --pad-ha: clamp(48px, 7vw, 96px);
+  --pad-hq: clamp(48px, 6vw, 80px);
+}
+
+/* ---------- 2. Your course: ruled list ---------- */
+.cl { background: var(--paper); padding-block: var(--pad-cl) calc(var(--pad-cl) * 0.8); }
+.cl-grid { display: grid; gap: 28px; }
+.cl-head { display: grid; gap: 12px; max-width: 46em; }
+.cl-resume {
+  justify-self: start; display: inline-flex; align-items: center; gap: 8px; min-height: 44px;
+  font: 600 18px var(--font-ui); color: var(--accent-ink); text-underline-offset: 4px;
+}
+.cl-list { list-style: none; margin: 8px 0 0; padding: 0; border-top: 1.5px solid var(--ink); }
+.cl-row {
+  display: grid; grid-template-columns: 56px minmax(0, 1fr) auto; gap: 8px 24px; align-items: center;
+  padding: 22px 0; border-bottom: 1px solid var(--line);
+}
+.cl-num { font: 700 clamp(28px, 3vw, 40px) / 1 var(--font-display); color: var(--accent); font-variant-numeric: tabular-nums; }
+.cl-title { margin: 0; font-size: clamp(22px, 2.2vw, 28px); line-height: 1.15; letter-spacing: -0.01em; }
+.cl-title a { color: var(--ink); text-decoration: none; }
+.cl-title a:hover { text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 4px; }
+.cl-out { margin: 6px 0 0; color: var(--ink-2); max-width: 52ch; }
+.cl-state { display: flex; align-items: center; gap: 16px; justify-content: flex-end; font-family: var(--font-ui); }
+.cl-label { font-size: 15px; color: var(--ink-2); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.cl-go {
+  display: inline-flex; align-items: center; justify-content: center; min-height: 44px; min-width: 96px; padding: 0 18px;
+  border: 1.5px solid var(--ink); border-radius: 10px; color: var(--ink); font-weight: 600; font-size: 16px; text-decoration: none;
+}
+.cl-go:hover { background: var(--ink); color: var(--paper); }
+.cl-skel { display: block; width: 210px; height: 44px; border-radius: 10px; background: var(--paper-2); }
+.cl-facts { margin: 0; font: 400 15px var(--font-ui); color: var(--ink-2); }
+.cl-facts a { color: var(--link); text-underline-offset: 3px; }
+@media (max-width: 47.99em) {
+  .cl-row { grid-template-columns: 40px minmax(0, 1fr); }
+  .cl-state { grid-column: 2; justify-content: space-between; }
+  .cl-label { white-space: normal; }
+}
+
+/* ---------- 3. One lesson, step by step: sticky stage on wide screens ---------- */
+.ls { background: var(--paper-warm); padding-block: var(--pad-ls); }
+.ls-h { max-width: 18ch; }
+.ls-lead { margin-top: 12px; }
+.ls-grid { margin-top: clamp(32px, 4vw, 56px); }
+.ls-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 40px; }
+.ls-step { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 6px 16px; }
+.ls-num {
+  grid-row: span 2; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%;
+  border: 1.5px solid var(--ink); font: 700 16px var(--font-ui);
+}
+.ls-title { margin: 4px 0 0; font-size: clamp(22px, 2.2vw, 28px); line-height: 1.15; }
+.ls-body { margin: 0; color: var(--ink-2); max-width: 46ch; }
+.ls-inline { grid-column: 1 / -1; width: 100%; height: auto; margin-top: 12px; border: 1px solid var(--line); border-radius: var(--r-inner); }
+.ls-stage { display: none; }
+.ls-try { margin: 32px 0 0; font: 600 17px var(--font-ui); }
+.ls-try a { color: var(--accent-ink); text-underline-offset: 4px; }
+
+@media (min-width: 48em) and (prefers-reduced-motion: no-preference) {
+  .ls-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(32px, 5vw, 80px); }
+  .ls-steps { gap: 0; }
+  .ls-step { min-height: 52vh; align-content: center; opacity: 0.45; transition: opacity 250ms var(--ease); }
+  .ls-step[data-active="true"] { opacity: 1; }
+  .ls-step[data-active="true"] .ls-num { background: var(--ink); color: var(--paper); }
+  .ls-inline { display: none; }
+  .ls-stage {
+    display: grid; position: sticky; top: calc(var(--nav-h) + 6vh); align-self: start; margin: 0;
+    height: fit-content;
+  }
+  .ls-stage img {
+    grid-area: 1 / 1; width: 100%; height: auto; border: 1px solid var(--line); border-radius: var(--r-card);
+    background: var(--paper); box-shadow: var(--sh-2); opacity: 0; transition: opacity 250ms var(--ease);
+  }
+  .ls-stage img[data-on="true"] { opacity: 1; }
+  .ls-stage figcaption { margin-top: 12px; font: 500 14px var(--font-ui); color: var(--ink-2); }
+}
+
+/* ---------- 4. Ask Pip: split, live ---------- */
+.ha { background: var(--paper); padding-block: var(--pad-ha); }
+.ha-grid { display: grid; gap: 32px; }
+.ha-head { display: grid; gap: 14px; align-content: start; }
+.ha-head h2 { max-width: 20ch; font-size: clamp(32px, 3.4vw, 48px); }
+.ha-panel { display: grid; gap: 18px; align-content: start; padding: clamp(20px, 3vw, 32px); border: 1px solid var(--line); border-radius: var(--r-card); background: var(--paper-2); }
+.ha-label { font: 600 15px var(--font-ui); }
+.ha-form { display: grid; gap: 8px; }
+.ha-row { display: flex; gap: 10px; }
+.ha-row input {
+  flex: 1; min-width: 0; min-height: 52px; padding: 0 16px; border: 1.5px solid var(--line); border-radius: 10px;
+  background: var(--paper); color: var(--ink); font: 400 17px var(--font-ui);
+}
+.ha-row input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-color: transparent; }
+.ha-send {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 52px; padding: 0 20px; border: 0; border-radius: 10px;
+  background: var(--accent); color: var(--on-accent); font: 600 16px var(--font-ui); cursor: pointer;
+}
+.ha-send:disabled { background: var(--fill); color: var(--ink-2); cursor: not-allowed; }
+.ha-note { margin: 0; font: 400 13px/1.45 var(--font-ui); color: var(--ink-2); }
+.ha-starters { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.ha-starters button {
+  min-height: 44px; padding: 0 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--paper);
+  color: var(--ink); font: 500 15px var(--font-ui); cursor: pointer;
+}
+.ha-starters button:hover { border-color: var(--accent); }
+.ha-out { display: grid; gap: 12px; padding-top: 4px; border-top: 1px solid var(--line); }
+.ha-you { margin: 12px 0 0; font: 600 15px var(--font-ui); color: var(--ink-2); }
+.ha-continue { justify-self: start; display: inline-flex; align-items: center; gap: 6px; min-height: 44px; font: 600 15px var(--font-ui); color: var(--accent-ink); }
+.ha-error { display: grid; gap: 6px; justify-items: start; padding: 12px 14px; border-radius: 10px; background: var(--danger-soft); color: var(--danger); font: 500 15px/1.45 var(--font-ui); }
+.ha-error p { margin: 0; }
+.ha-retry { min-height: 44px; padding: 0 14px; border: 1.5px solid currentColor; border-radius: 10px; background: transparent; color: inherit; font: 600 15px var(--font-ui); cursor: pointer; }
+@media (min-width: 60em) {
+  .ha-grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(40px, 5vw, 80px); align-items: start; }
+}
+
+/* ---------- 5. Questions people actually ask ---------- */
+.hq { background: var(--paper-2); padding-block: var(--pad-hq) calc(var(--pad-hq) * 1.25); }
+.hq-grid { display: grid; gap: 28px; }
+.hq-list { margin: 0; display: grid; gap: 0; border-top: 1.5px solid var(--ink); }
+.hq-item { padding: 20px 0; border-bottom: 1px solid var(--line); }
+.hq-h { font-size: clamp(32px, 3.6vw, 52px); }
+.hq-item dt { font: 700 clamp(19px, 1.8vw, 22px) / 1.25 var(--font-display); }
+.hq-item dd { margin: 8px 0 0; color: var(--ink-80); max-width: 62ch; }
+.hq-item a, .hq-end a:not(.hq-cta) { color: var(--link); text-underline-offset: 3px; }
+.hq-end { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 24px; }
+.hq-end p { margin: 0; font: 500 16px var(--font-ui); }
+.hq-cta {
+  display: inline-flex; align-items: center; min-height: 52px; padding: 0 26px; border-radius: 10px;
+  background: var(--accent); color: var(--on-accent); font: 600 17px var(--font-ui); text-decoration: none;
+}
+.hq-cta:hover { background: var(--accent-ink); color: var(--on-accent); }
+@media (min-width: 60em) {
+  .hq-grid { grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); column-gap: clamp(40px, 6vw, 96px); }
+  .hq-h { grid-row: span 2; align-self: start; position: sticky; top: calc(var(--nav-h) + 32px); }
+}
+
+/* ---------- Hero: offset layout and the (team-signed) essay answer ---------- */
+@media (min-width: 64em) {
+  .hero-top { align-items: flex-start; text-align: left; }
+  .hero-actions { justify-content: flex-start; }
+  .hero-h { max-width: 17ch; }
+  .hero-proof { justify-content: flex-end; }
+}
+.hero-start { border-radius: 10px; }
+.hero-essay { width: 100%; max-width: 760px; margin-bottom: 16px; padding: 20px 22px; border-radius: var(--r-card); background: var(--paper); color: var(--ink); }
+.hero-essay-q { margin: 0; font: 700 20px var(--font-display); }
+.hero-essay-a { margin: 8px 0 0; }
+.hero-essay-by { margin: 10px 0 0; font: 400 13px var(--font-ui); color: var(--ink-2); }
+.hero-credit a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }

@@ -1,0 +1,167 @@
+/* Site chrome: nav, menu sheet, intro, route bar, shared Card / Annotation / Pip styles. */
+
+/* ---------- Shared bits the app screens still use ---------- */
+[data-color="ink"] { --mc: var(--m1); --mc-soft: var(--blue-soft); }
+[data-color="spark"] { --mc: var(--m2); --mc-soft: var(--spark-soft); }
+[data-color="leaf"] { --mc: var(--leaf); --mc-soft: var(--leaf-soft); }
+.module-step { font-family: var(--font-ui); font-weight: 600; color: var(--mc, var(--accent)); font-size: 15px; }
+.bubble { max-width: 260px; padding: 10px 14px; border-radius: 16px; background: var(--paper-2); font-size: 15px; line-height: 1.35; text-align: center; }
+.bubble-sm { padding: 6px 10px; font: 600 13px var(--font-ui); white-space: nowrap; background: var(--ink); color: var(--paper); border-radius: 10px; }
+.route { animation: route-enter 160ms var(--ease) backwards; }
+@keyframes route-enter { from { opacity: 0.9; transform: translate3d(0, 6px, 0); } }
+@keyframes pop { 70% { transform: scale(1.15); } to { transform: scale(1); } }
+@keyframes bob { 50% { transform: translateY(-6px); } }
+@keyframes trace { to { stroke-dashoffset: 0; } }
+@media (prefers-reduced-motion: no-preference) {
+  .pip-float { animation: bob 7s ease-in-out infinite; }
+  .pip .pip-signal { animation: pip-blink 2.6s ease-in-out infinite; }
+  .pip-wave .pip-wave-arm { transform-origin: 86px 56px; animation: pip-wave 1.6s ease-in-out infinite; }
+}
+@keyframes pip-blink { 50% { opacity: 0.4; } }
+@keyframes pip-wave { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(-14deg); } }
+.pip-anim-bounce { animation: pip-bounce 600ms var(--ease); }
+.pip-anim-tilt { animation: pip-tilt 700ms var(--ease); transform-origin: 50% 80%; }
+@keyframes pip-bounce { 30% { transform: translateY(-14px) scale(1.05); } 60% { transform: translateY(0) scale(0.97); } }
+@keyframes pip-tilt { 30% { transform: rotate(-10deg); } 70% { transform: rotate(6deg); } }
+@media (prefers-reduced-motion: reduce) { .pip-anim-bounce, .pip-anim-tilt { animation: none; } }
+
+/* ---------- Card (components/ui/Card.tsx) ---------- */
+.card { position: relative; display: block; border-radius: var(--r-card); color: inherit; transition: transform 300ms var(--ease), box-shadow 300ms var(--ease); }
+.card-plain { background: var(--paper-2); padding: 28px; }
+.card-product { background: var(--surface); box-shadow: var(--sh-3); }
+.card-dark { background: var(--night-2); color: #f3f0ea; }
+a.card:hover { text-decoration: none; }
+@media (hover: hover) and (pointer: fine) {
+  .card-link:hover { transform: translateY(-4px); box-shadow: var(--sh-2); }
+}
+.about-cols .card { padding: 28px; }
+.about-cols .card p { margin-top: 8px; color: var(--ink-2); }
+
+/* ---------- Annotation (components/ui/Annotation.tsx) ---------- */
+.anno { position: absolute; display: block; pointer-events: none; }
+.anno svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.anno-label { position: absolute; white-space: nowrap; font-size: 22px; }
+.anno-note-right .anno-label { left: calc(100% + 6px); top: 50%; translate: 0 -50%; }
+.anno-note-left .anno-label { right: calc(100% + 8px); top: 50%; translate: 0 -50%; }
+.anno-note-top .anno-label { bottom: calc(100% + 4px); left: 50%; translate: -50% 0; }
+.anno-note-bottom .anno-label { top: calc(100% + 4px); left: 50%; translate: -50% 0; }
+
+/* ---------- Section header (components/ui/SectionHeader.tsx) ---------- */
+.sh { display: grid; gap: 16px; margin-bottom: var(--head-gap); }
+.sh-title { position: relative; }
+.sh-center { justify-items: center; text-align: center; }
+.sh-center .sh-title { margin-inline: auto; }
+.sh-center .t-lead { margin-inline: auto; }
+.sh-split { grid-template-columns: 1fr 1fr; align-items: end; gap: 24px 48px; }
+.sh-split .sh-side { display: grid; gap: 12px; justify-items: start; }
+.sh-dark .sh-title { color: #f5f3ee; }
+@media (max-width: 767px) { .sh-split { grid-template-columns: 1fr; } }
+
+/* ---------- Nav ---------- */
+.site-header {
+  position: sticky; top: 0; z-index: 60; height: var(--nav-h);
+  background: var(--paper);
+  box-shadow: 0 1px 0 transparent; color: var(--ink);
+  transition: background-color 200ms ease, color 200ms ease, box-shadow 200ms ease;
+}
+.site-header[data-scrolled="true"] { box-shadow: 0 1px 0 var(--line); }
+.header-row { display: flex; align-items: center; gap: 16px; height: 100%; }
+.brand-link { color: inherit; display: inline-flex; min-height: 44px; align-items: center; }
+.brand-link:hover { text-decoration: none; }
+.main-nav { display: flex; gap: 4px; margin-inline: auto; }
+.main-nav a {
+  position: relative; display: inline-flex; align-items: center; min-height: 44px; padding: 0 12px;
+  color: var(--ink-2); font-size: 14px; letter-spacing: -0.01em; transition: color 150ms ease;
+}
+.main-nav a:hover { color: var(--ink); text-decoration: none; }
+.main-nav a[aria-current="page"] { color: var(--ink); }
+.main-nav a[aria-current="page"]::after { content: ""; position: absolute; left: 50%; bottom: 6px; width: 4px; height: 4px; margin-left: -2px; border-radius: 50%; background: var(--accent); }
+.header-right { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+.main-nav + .header-right { margin-left: 0; }
+.stat-chips { display: flex; gap: 6px; color: inherit; }
+.stat-chips:hover { text-decoration: none; }
+.chip { display: inline-flex; align-items: center; gap: 4px; height: 28px; min-width: 52px; padding: 0 10px; border-radius: 980px; font-size: 13px; font-weight: 600; background: var(--paper-2); color: var(--ink-2); }
+.chip svg { width: 14px; height: 14px; }
+.chip-streak[data-on="true"] svg { color: var(--spark-fill); }
+.nav-start { transition: opacity 250ms var(--ease), transform 250ms var(--ease), filter 150ms; }
+.nav-start[data-show="false"] { opacity: 0; transform: translateY(-6px); pointer-events: none; }
+.menu-btn { display: none; position: relative; width: 44px; height: 44px; margin-right: -10px; border: 0; background: none; color: inherit; cursor: pointer; border-radius: 12px; }
+.menu-btn span { position: absolute; left: 13px; right: 13px; height: 1.5px; background: currentColor; border-radius: 2px; transition: transform 300ms var(--ease); }
+.menu-btn span:first-child { transform: translateY(-4px); }
+.menu-btn span:last-child { transform: translateY(4px); }
+.menu-btn[data-open="true"] span:first-child { transform: rotate(45deg); }
+.menu-btn[data-open="true"] span:last-child { transform: rotate(-45deg); }
+.menu-sheet {
+  position: fixed; inset: var(--nav-h) 0 0 0; z-index: 59; overflow-y: auto; display: flex; flex-direction: column;
+  background: var(--surface); padding-bottom: max(24px, env(safe-area-inset-bottom));
+}
+.menu-links { display: grid; gap: 2px; padding-block: 16px 24px; }
+.menu-links a { display: flex; align-items: center; min-height: 52px; font: 600 32px/1.15 var(--font-display); color: var(--ink); }
+.menu-links a:hover { text-decoration: none; color: var(--accent-ink); }
+.menu-links a[aria-current="page"] { color: var(--accent-ink); }
+.menu-foot { margin-top: auto; display: grid; gap: 16px; }
+.html-menu-lock, html.menu-open { overflow: hidden; }
+@media (max-width: 1023px) {
+  .main-nav { display: none; }
+  .main-nav + .header-right { margin-left: auto; }
+  .menu-btn { display: block; }
+}
+@media (max-width: 480px) {
+  .header-right .stat-chips { display: none; }
+  .header-right .nav-start { display: none; }
+}
+
+/* ---------- Route progress bar ---------- */
+.route-bar { position: fixed; top: 0; left: 0; z-index: 400; height: 2px; width: 100%; background: var(--accent); transform-origin: left; transform: scaleX(0); opacity: 0; pointer-events: none; }
+.route-bar[data-phase="loading"] { opacity: 1; transform: scaleX(0.8); transition: transform 2.5s cubic-bezier(0.1, 0.7, 0.2, 1), opacity 100ms; }
+.route-bar[data-phase="done"] { opacity: 0; transform: scaleX(1); transition: transform 200ms ease, opacity 300ms ease 150ms; }
+
+/* ---------- XP flyer ---------- */
+.xp-flyer { position: fixed; left: 0; top: 0; z-index: 300; display: inline-flex; align-items: center; gap: 4px; padding: 6px 12px; border-radius: 980px; background: var(--good); color: #fff; font: 700 13px var(--font-ui); pointer-events: none; }
+
+/* ---------- Intro (components/intro-overlay.tsx) ----------
+   White on the night sky: the hero behind it is dark, and the nav logo it lands on is white. 
+   Desktop timeline: 0-700 N draws, 700-950 dot pops, 700-1050 wordmark slides in, hold,
+   --intro-hand..--intro-land hand-off (1000ms), page settles from hand+100 for 900ms.
+   Phones (html.nn-intro-m) hold less and hand off in 850ms. Hero rises start at land-150ms. */
+:root { --intro-hand: 1350ms; --intro-land: 2350ms; }
+html.nn-intro-m { --intro-hand: 1250ms; --intro-land: 2100ms; }
+.intro {
+  position: fixed; inset: 0; z-index: 100; display: grid; place-items: center;
+  animation: intro-failsafe 300ms ease 3.4s forwards;
+}
+html.nn-no-intro .intro { display: none; }
+.intro-bg { position: absolute; inset: 0; background: #03060a; animation: intro-bg-out 900ms var(--ease) calc(var(--intro-hand) + 100ms) both; }
+/* The moving layers sit above .intro-bg (positioned), or the mark would paint underneath it. */
+.intro-x { position: relative; }
+.intro-logo { --s: 88px; display: flex; align-items: center; gap: calc(var(--s) * 0.3); color: #f7f4ee; transform-origin: 0 0; }
+.intro-mark { width: var(--s); height: var(--s); flex: none; overflow: visible; }
+.intro-line { stroke: #f7f4ee; stroke-width: 6; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; animation: trace 200ms ease-out calc(120ms + var(--i) * 150ms) forwards; }
+.intro-node { fill: #f7f4ee; transform-box: fill-box; transform-origin: center; transform: scale(0); animation: node-pop 320ms cubic-bezier(0.34, 1.56, 0.64, 1) calc(var(--i) * 110ms) forwards, node-flash 320ms ease calc(var(--i) * 110ms); }
+.intro-dot { fill: #e8501f; transform-box: fill-box; transform-origin: center; transform: scale(0); animation: node-pop 250ms cubic-bezier(0.34, 1.56, 0.64, 1) 700ms forwards; }
+.intro-word {
+  font-family: var(--font-display); font-weight: 700; font-size: calc(var(--s) * 0.78); line-height: 1; letter-spacing: -0.01em;
+  opacity: 0; transform: translateX(8px); animation: word-in 350ms var(--ease) 700ms forwards;
+}
+@media (max-width: 767px) { .intro-logo { --s: 64px; } }
+@keyframes node-pop { to { transform: scale(1); } }
+@keyframes node-flash { 0%, 40% { fill: #e8501f; } 100% { fill: #f7f4ee; } }
+@keyframes word-in { to { opacity: 1; transform: none; } }
+@keyframes intro-bg-out { to { opacity: 0; } }
+@keyframes intro-failsafe { to { opacity: 0; visibility: hidden; } }
+
+/* The page underneath: blurred and slightly zoomed, settling as the intro lands */
+html.nn-intro-run main#main { transform: scale(1.02); filter: blur(6px); animation: intro-settle 900ms var(--ease) calc(var(--intro-hand) + 100ms) both; }
+@keyframes intro-settle { to { transform: scale(1); filter: blur(0); } }
+
+/* Nav logo and nav items are hidden until the logo lands. The 3.4s failsafe shows them if JS never lands. */
+html.nn-intro-run:not(.nn-intro-landed) :is(#nav-logo, .main-nav a, .header-right > *) { opacity: 0; animation: nav-show 1ms linear 3.4s forwards; }
+@keyframes nav-show { to { opacity: 1; } }
+html.nn-intro-landed :is(.main-nav a, .header-right > *) { animation: nav-in 200ms var(--ease) backwards; }
+html.nn-intro-landed .main-nav a:nth-child(2) { animation-delay: 40ms; }
+html.nn-intro-landed .main-nav a:nth-child(3) { animation-delay: 80ms; }
+html.nn-intro-landed .main-nav a:nth-child(4) { animation-delay: 120ms; }
+html.nn-intro-landed .main-nav a:nth-child(5) { animation-delay: 160ms; }
+html.nn-intro-landed .header-right > :nth-child(2) { animation-delay: 40ms; }
+html.nn-intro-landed .header-right > :nth-child(3) { animation-delay: 80ms; }
+@keyframes nav-in { from { opacity: 0; } }
