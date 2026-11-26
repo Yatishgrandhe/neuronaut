@@ -2,7 +2,7 @@
 
 > Draft. The team must rewrite this in their own words and fill in every [TEAM] part before uploading it.
 
-**Team:** [TEAM: names and chapter number]  **Live site:** [TEAM: URL]  **Code:** https://github.com/Yatishgrandhe/neuronaut
+**Team:** [TEAM: names and chapter number]  **Live site:** https://neuronaut-six.vercel.app  **Code:** https://github.com/Yatishgrandhe/neuronaut
 
 ## The learning problem
 High school students use AI for schoolwork every day, but most have never been taught how it works, when it makes things up, or where help turns into cheating. One-off lessons fade within days. We wanted software that teaches AI literacy and also makes it stick.
