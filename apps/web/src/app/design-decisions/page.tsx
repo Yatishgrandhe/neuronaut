@@ -19,18 +19,18 @@ const DECISIONS: { topic: string; choice: string; why: string }[] = [
   },
   {
     topic: "Type",
-    choice: "Gelasio for headings and reading, the system sans for small controls, Caveat only for the handwritten margin notes.",
+    choice: "Gelasio for headings and reading, the system sans for small controls, Caveat only for the handwritten margin notes. On the home page, Instrument Serif for the headline and section titles.",
     why: "A readable serif suits long lessons; the handwriting is the “teacher’s pen” and is used sparingly so it stays special.",
   },
   {
     topic: "Hero",
-    choice: "Our own word planet rising under a NASA photo of the Milky Way from the ISS, with the essay question answered right there.",
-    why: "It shows the core idea of the course (AI reads text as tokens) instead of decoration, and it is original work. A still image loads first so the page stays fast.",
+    choice: "An animated 3D particle field behind the headline and the Start lesson 1 button. Most dots are soft white, some are warm gold, and faint lines join nearby dots, suggesting a network. It drifts slowly and shifts a little with the cursor. The site header is transparent over it and turns into the usual bar as you scroll.",
+    why: "Three ready-made 3D backgrounds were compared in a local design lab: React Bits Galaxy, React Bits Particles, and a react-three-fiber star field, which added about 250 KB more JavaScript. We chose Particles, which is raw WebGL2 with no extra packages, and removed the star field and its packages. Reduced motion shows one still frame, and the animation pauses when it is scrolled out of view. Earlier heroes were a NASA photo of the Milky Way taken from the International Space Station and our own word planet; neither is on the home page now.",
   },
   {
     topic: "Layout",
-    choice: "Five home sections, each a different layout: split hero, a ruled course list, a step-by-step lesson walk-through, a live Ask Pip panel, and a short list of real questions.",
-    why: "Varied layouts give the page a rhythm, and every section answers a question a visitor actually has. We avoided made-up testimonials, logo bars and pricing because Neuronaut is free and new.",
+    choice: "A dark home page in a ledger layout. A sticky index on the left marks the section you are reading. The course units are rows with lesson lengths, followed by how a lesson works, one question from lesson 1 you can answer in place, the questions people ask, and a closing Start link.",
+    why: "The ledger was chosen over two other body layouts in the design lab. We avoided made-up testimonials, logo bars and pricing because Neuronaut is free and new.",
   },
   {
     topic: "Motivation",

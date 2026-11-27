@@ -65,6 +65,16 @@ a.card:hover { text-decoration: none; }
   transition: background-color 200ms ease, color 200ms ease, box-shadow 200ms ease;
 }
 .site-header[data-scrolled="true"] { box-shadow: 0 1px 0 var(--line); }
+/* Home over the dark hero (data-over-hero set only on "/"): transparent, light text, until scrolled or the menu opens.
+   The wordmark and menu bars inherit currentColor, so they follow the header colour. */
+.site-header[data-over-hero="true"] { background-color: transparent; color: #ece9e2; box-shadow: 0 1px 0 transparent; }
+.site-header[data-over-hero="true"] .main-nav a { color: rgb(236 233 226 / 0.8); }
+.site-header[data-over-hero="true"] .main-nav a:hover,
+.site-header[data-over-hero="true"] .main-nav a[aria-current="page"] { color: #ece9e2; }
+.site-header[data-over-hero="true"] .main-nav a[aria-current="page"]::after { background: #f3c98b; }
+.site-header[data-over-hero="true"] .chip { background: rgb(255 255 255 / 0.12); color: #ece9e2; }
+.site-header[data-over-hero="true"] :focus-visible { outline: 2px solid #f3c98b; outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .site-header[data-over-hero] { transition: none; } }
 .header-row { display: flex; align-items: center; gap: 16px; height: 100%; }
 .brand-link { color: inherit; display: inline-flex; min-height: 44px; align-items: center; }
 .brand-link:hover { text-decoration: none; }

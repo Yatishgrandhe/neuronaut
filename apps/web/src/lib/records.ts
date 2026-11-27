@@ -22,15 +22,24 @@ export interface Asset {
 
 export const ASSETS: Asset[] = [
   {
-    item: "Milky Way photographed from the International Space Station (hero sky)",
+    item: "Milky Way photographed from the International Space Station (design lab only)",
     kind: "Image",
     creator: "NASA",
     // TODO(team): add the exact NASA image ID / URL for the ISS Milky Way photo.
     source: null,
     license: "NASA media guidelines (generally not copyrighted)",
     licenseUrl: "https://www.nasa.gov/nasa-brand-center/images-and-media/",
-    howUsed: "Background of the home-page hero, resized to 1024 and 1920 px (webp, avif). Credit line shown under the hero.",
+    howUsed: "Former home-page hero background, now replaced. Kept in the repo for the design lab, which compared it with other hero options. Resized to 1024 and 1920 px (webp, avif).",
     permission: "No permission required; NASA asks for credit and no implied endorsement.",
+  },
+  {
+    item: "React Bits Particles background (home-page hero)",
+    kind: "Code library",
+    creator: "David Haz",
+    source: "https://reactbits.dev/backgrounds/particles",
+    license: "MIT + Commons Clause",
+    howUsed: "Animated 3D particle field behind the home-page hero. Raw WebGL2, no extra packages.",
+    permission: "MIT allows use with the licence notice kept. The Commons Clause bars selling software whose value comes mainly from it; Neuronaut is free and sells nothing.",
   },
   {
     item: "Photographs of students and classrooms (21 photos)",
@@ -105,7 +114,7 @@ export const ASSETS: Asset[] = [
     creator: "Neuronaut team",
     source: null,
     license: "Ours",
-    howUsed: "Hero visual: the course's own words on a turning sphere, written in Rust, compiled to WebAssembly, drawn with WebGL2.",
+    howUsed: "Former home-page hero, now replaced: the course's own words on a turning sphere, written in Rust, compiled to WebAssembly, drawn with WebGL2. The code is kept in apps/web/planet.",
     permission: "Original work; see How we built it for which parts were AI-assisted.",
   },
   {
@@ -223,5 +232,21 @@ export const WORK_LOG: LogEntry[] = [
     who: null,
     minutes: null,
     ai: "AI-assisted (Claude Code); measurements from Chrome DevTools.",
+  },
+  {
+    date: "2026-11-26",
+    task: "Home page redesign",
+    detail: "Explored five home page directions in a local design lab, chose Night sky, then compared three body layouts and chose Ledger.",
+    who: null,
+    minutes: null,
+    ai: "AI-assisted (Claude Code).",
+  },
+  {
+    date: "2026-11-26",
+    task: "Home page hero",
+    detail: "Home page hero: compared three ready-made 3D backgrounds in the design lab and chose React Bits Particles. The three were React Bits Galaxy, React Bits Particles and a react-three-fiber star field (about 250 KB more JavaScript); the star field and its packages were removed.",
+    who: null,
+    minutes: null,
+    ai: "AI-assisted (Claude Code); Haiku agents searched component libraries and 3D tools and tried the options in the lab.",
   },
 ];

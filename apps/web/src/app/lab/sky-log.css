@@ -1,0 +1,65 @@
+/* Night sky, mission log: the course as one vertical timeline. Every rule is scoped to .lv-sk-log. */
+.lv-sk-log { --skg-gap: 36px; }
+.lv-sk-log a:focus-visible, .lv-sk-log button:focus-visible { outline: 3px solid var(--glow); outline-offset: 3px; }
+
+.lv-sk-log .skg-main { width: min(720px, 100% - 40px); margin-inline: auto; padding: 56px 0 48px; }
+.lv-sk-log .skg-section { padding-bottom: 72px; scroll-margin-top: 24px; }
+.lv-sk-log .skg-section h2 { font: 400 clamp(34px, 4vw, 52px) / 1.05 var(--lab-serif), serif; margin: 0 0 28px; }
+
+/* Timeline: a thin glowing spine, one marker per lesson, a larger marker per phase. */
+.lv-sk-log .skg-log { position: relative; margin: 0; padding: 0 0 0 var(--skg-gap); list-style: none; }
+.lv-sk-log .skg-log::before {
+  content: ""; position: absolute; top: 10px; bottom: 10px; left: 7px; width: 1px;
+  background: linear-gradient(180deg, transparent, var(--glow) 6%, var(--glow) 94%, transparent);
+  box-shadow: 0 0 12px 1px rgb(243 201 139 / 0.35);
+}
+.lv-sk-log .skg-log > li { position: relative; padding: 0 0 28px; }
+.lv-sk-log .skg-log > li::before {
+  content: ""; position: absolute; top: 4px; left: calc(7px - var(--skg-gap) - 4.5px); width: 9px; height: 9px; border-radius: 50%;
+  background: var(--bg); box-shadow: 0 0 0 1px var(--glow), 0 0 10px 2px rgb(243 201 139 / 0.45);
+}
+
+.lv-sk-log .skg-log > .skg-phase { padding: 40px 0 26px; }
+.lv-sk-log .skg-log > .skg-phase::before {
+  top: 48px; left: calc(7px - var(--skg-gap) - 7.5px); width: 15px; height: 15px;
+  background: var(--glow); box-shadow: 0 0 0 4px var(--bg), 0 0 0 5px var(--glow), 0 0 18px 4px rgb(243 201 139 / 0.4);
+}
+.lv-sk-log .skg-phase h3 { font: 400 clamp(28px, 3.4vw, 36px) / 1.1 var(--lab-serif), serif; margin: 0; }
+.lv-sk-log .skg-tagline { margin: 10px 0 0; max-width: 52ch; font-size: 17px; line-height: 1.55; color: var(--muted); }
+
+.lv-sk-log .skg-stamp { margin: 0; font: 400 14px / 1.2 var(--lab-mono), monospace; letter-spacing: 0.04em; color: var(--glow); }
+.lv-sk-log .skg-entry-title { margin: 6px 0 0; font-size: 18px; line-height: 1.4; }
+.lv-sk-log .skg-entry-title a { display: inline-flex; align-items: center; min-height: 44px; text-underline-offset: 4px; text-decoration-color: rgb(255 255 255 / 0.3); }
+.lv-sk-log .skg-entry-title a:hover { color: var(--glow); }
+.lv-sk-log .skg-len { margin: 0; font-size: 16px; color: var(--muted); }
+
+.lv-sk-log .skg-log > .skg-end { padding-bottom: 0; }
+.lv-sk-log .skg-log > .skg-end::before {
+  top: 3px; left: calc(7px - var(--skg-gap) - 5.5px); width: 11px; height: 11px; background: var(--glow);
+  box-shadow: 0 0 0 4px var(--bg), 0 0 16px 4px rgb(243 201 139 / 0.4);
+}
+.lv-sk-log .skg-end-title { margin: 6px 0 0; font: 400 clamp(26px, 3vw, 32px) / 1.1 var(--lab-serif), serif; }
+
+/* How a lesson works, as short log notes */
+.lv-sk-log .skg-notes { margin: 0; padding: 0; list-style: none; }
+.lv-sk-log .skg-notes li { padding: 18px 0; border-top: 1px solid var(--line); }
+.lv-sk-log .skg-note-n { margin: 0; font-size: 14px; color: var(--glow); }
+.lv-sk-log .skg-notes h3 { margin: 4px 0 6px; font-size: 19px; font-weight: 600; }
+.lv-sk-log .skg-notes p:not(.skg-note-n) { margin: 0; font-size: 17px; line-height: 1.55; color: var(--muted); }
+
+.lv-sk-log .sk-faq { margin: 0; }
+.lv-sk-log .skg-finish { margin: 0; }
+.lv-sk-log .skg-start {
+  display: inline-flex; align-items: center; min-height: 52px; padding: 0 26px; border-radius: 999px;
+  background: var(--fg); color: var(--bg); font-weight: 700; text-decoration: none;
+}
+.lv-sk-log .skg-start:hover { background: #fff; }
+
+@media (min-width: 761px) {
+  .lv-sk-log { --skg-gap: 48px; }
+  .lv-sk-log .skg-main { padding-top: 88px; }
+}
+@media (max-width: 760px) {
+  .lv-sk-log .skg-section { padding-bottom: 56px; }
+  .lv-sk-log .skg-section h2 { margin-bottom: 20px; }
+}

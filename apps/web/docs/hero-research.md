@@ -1,5 +1,7 @@
 # Hero research and decisions (Nov 20, 2026)
 
+> **Update (Nov 26, 2026):** the word-planet hero described below is no longer on the home page. The home page hero is now an animated 3D particle field, the React Bits "Particles" background, which replaced an earlier Milky Way photo version the same day. The rest of this note is kept as written.
+
 Five parallel research passes (Haiku), then synthesis here. Skills applied on top: Frontend Design, Impeccable (craft floor + detector).
 
 ## Report summaries

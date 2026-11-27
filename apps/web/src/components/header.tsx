@@ -78,14 +78,15 @@ export function Header() {
     };
   }, [open]);
 
-  if (path.startsWith("/lesson/")) return null; // focused lesson mode
+  if (path.startsWith("/lesson/") || path.startsWith("/lab")) return null; // focused lesson mode; the lab draws its own nav
   const next = (ready ? nextLesson(state) : undefined) ?? allLessons[0];
   // One primary action per screen: the dashboard's "Next" card already says what to do.
   const showStart = path === "/dashboard" ? false : path !== "/" || heroCtaGone;
 
   return (
     <>
-      <header className="site-header" data-scrolled={scrolled || open}>
+      {/* Home only: transparent with light text while at the top over the dark hero. */}
+      <header className="site-header" data-scrolled={scrolled || open} data-over-hero={path === "/" ? !scrolled && !open : undefined}>
         <div className="wrap header-row">
           <Link href="/" className="brand-link" id="nav-logo" aria-label="Neuronaut home" onClick={() => setOpen(false)}>
             <Wordmark size={24} />

@@ -1,0 +1,89 @@
+/* Night sky, ledger variant. Body below the shared Night sky hero. Tokens come from .lv-sk in sk.css. */
+
+/* Layout: sticky index on the left, body on the right. */
+.lv-sk-ledger .skl-body {
+  display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 64px;
+  width: min(1160px, 100% - 40px); margin: 0 auto; padding: 64px 0 0;
+}
+.lv-sk-ledger .skl-index {
+  position: sticky; top: 32px; align-self: start; max-height: calc(100svh - 64px); overflow-y: auto;
+  display: grid; gap: 2px; border-left: 1px solid var(--line);
+}
+.lv-sk-ledger .skl-index a {
+  display: flex; align-items: center; min-height: 44px; margin-left: -1px; padding: 0 0 0 14px;
+  border-left: 2px solid transparent; color: var(--muted); text-decoration: none; font-size: 16px; line-height: 1.3;
+}
+.lv-sk-ledger .skl-index a:hover { color: var(--fg); }
+.lv-sk-ledger .skl-index a[aria-current="true"] { color: var(--glow); border-left-color: var(--glow); }
+.lv-sk-ledger .skl-main { min-width: 0; }
+.lv-sk-ledger .skl-main > section { padding-bottom: 80px; scroll-margin-top: 24px; }
+.lv-sk-ledger .skl-main h2 { font: 400 clamp(34px, 4vw, 52px) / 1.05 var(--lab-serif), serif; margin: 0 0 28px; }
+
+/* Course: one ledger row per unit. Unit on the left, lessons on the right. */
+.lv-sk-ledger .skl-unit { display: grid; gap: 16px; padding: 28px 0; border-top: 1px solid var(--line); }
+.lv-sk-ledger .skl-unit-n { margin: 0; font-size: 14px; color: var(--glow); }
+.lv-sk-ledger .skl-unit h3 { font: 400 32px / 1.1 var(--lab-serif), serif; margin: 4px 0 8px; }
+.lv-sk-ledger .skl-unit-desc { margin: 0; max-width: 60ch; color: var(--muted); line-height: 1.6; font-size: 17px; }
+.lv-sk-ledger .skl-lessons { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+.lv-sk-ledger .skl-lessons li { border-bottom: 1px solid var(--line); }
+.lv-sk-ledger .skl-lessons a {
+  display: flex; align-items: center; gap: 16px; min-height: 44px; padding: 10px 0;
+  color: var(--fg); text-decoration: none; font-size: 16px; line-height: 1.4;
+}
+.lv-sk-ledger .skl-lessons a:hover .skl-l-title { color: var(--glow); }
+.lv-sk-ledger .skl-l-n { flex: none; min-width: 3.2ch; color: var(--muted); font-variant-numeric: tabular-nums; }
+.lv-sk-ledger .skl-l-title { flex: 1 1 auto; min-width: 0; overflow-wrap: anywhere; }
+.lv-sk-ledger .skl-l-min { flex: none; margin-left: auto; text-align: right; white-space: nowrap; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+/* How a lesson works: numbered ledger rows. */
+.lv-sk-ledger .skl-steps { margin: 0; padding: 0; list-style: none; counter-reset: skl-s; border-top: 1px solid var(--line); }
+.lv-sk-ledger .skl-steps li {
+  display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 0 16px; padding: 22px 0;
+  border-bottom: 1px solid var(--line); counter-increment: skl-s;
+}
+.lv-sk-ledger .skl-steps li::before { content: counter(skl-s); grid-row: span 2; font: 400 40px / 1 var(--lab-serif), serif; color: var(--glow); }
+.lv-sk-ledger .skl-steps h3 { margin: 0 0 6px; font: 400 26px / 1.15 var(--lab-serif), serif; }
+.lv-sk-ledger .skl-steps p { margin: 0; max-width: 62ch; color: var(--muted); line-height: 1.6; font-size: 17px; }
+
+/* Questions */
+.lv-sk-ledger .skl-faq { margin: 0; }
+.lv-sk-ledger .skl-faq > div { padding: 20px 0; border-top: 1px solid var(--line); }
+.lv-sk-ledger .skl-faq dt { margin: 0; font: 400 26px / 1.2 var(--lab-serif), serif; }
+.lv-sk-ledger .skl-faq dd { margin: 6px 0 0; max-width: 62ch; color: var(--muted); line-height: 1.6; font-size: 17px; }
+
+/* Closing line */
+.lv-sk-ledger .skl-close { display: grid; justify-items: start; gap: 24px; padding-top: 40px; border-top: 1px solid var(--line); }
+.lv-sk-ledger .skl-close p { margin: 0; max-width: 40ch; font: 400 clamp(30px, 4vw, 44px) / 1.1 var(--lab-serif), serif; }
+.lv-sk-ledger .skl-close .sk-btn { min-width: 44px; }
+
+/* Focus and motion */
+.lv-sk-ledger :focus-visible { outline: 3px solid var(--glow); outline-offset: 3px; }
+.lv-sk-ledger .skl-index a,
+.lv-sk-ledger .skl-lessons a,
+.lv-sk-ledger .skl-l-title { transition: color 160ms ease, border-color 160ms ease; }
+@media (prefers-reduced-motion: reduce) {
+  .lv-sk-ledger .skl-index a,
+  .lv-sk-ledger .skl-lessons a,
+  .lv-sk-ledger .skl-l-title { transition: none; }
+}
+
+/* Wide enough for two columns in each unit row. */
+@media (min-width: 900px) {
+  .lv-sk-ledger .skl-unit { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 48px; align-items: start; }
+  .lv-sk-ledger .skl-lessons { margin-top: 4px; }
+}
+
+/* Tablet and phone: the index becomes a wrapping row of links above the body. */
+@media (max-width: 820px) {
+  .lv-sk-ledger .skl-body { grid-template-columns: minmax(0, 1fr); gap: 24px; padding-top: 40px; }
+  .lv-sk-ledger .skl-index { position: static; max-height: none; overflow: visible; display: flex; flex-wrap: wrap; gap: 0 12px; border-left: 0; }
+  .lv-sk-ledger .skl-index a { min-height: 44px; margin: 0; padding: 0 4px; border-left: 0; }
+  .lv-sk-ledger .skl-index a[aria-current="true"] { border-left-color: transparent; box-shadow: inset 0 -2px 0 var(--glow); }
+}
+@media (max-width: 760px) {
+  .lv-sk-ledger .skl-main > section { padding-bottom: 56px; }
+  .lv-sk-ledger .skl-main h2 { margin-bottom: 20px; }
+  .lv-sk-ledger .skl-unit { padding: 22px 0; }
+  .lv-sk-ledger .skl-steps li { grid-template-columns: 40px minmax(0, 1fr); }
+  .lv-sk-ledger .skl-steps li::before { font-size: 32px; }
+}

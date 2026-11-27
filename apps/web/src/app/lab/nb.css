@@ -1,0 +1,73 @@
+/* ---------- 1. Notebook ---------- */
+.lv-nb {
+  --bg: #fbf8f1; --fg: #22201c; --muted: #6b645a; --rule: #d9e3ef; --margin: #e7a1a1; --pencil: #b42318; --focus: #b42318;
+  --body-font: var(--font-gelasio), Georgia, serif;
+  background-image: linear-gradient(var(--rule) 1px, transparent 1px);
+  background-size: 100% 34px;
+}
+.lv-nb::before { content: ""; position: fixed; inset: 0 auto 0 max(16px, calc(50% - 620px)); width: 2px; background: var(--margin); pointer-events: none; }
+.nb-mark { display: inline-flex; align-items: center; min-height: 44px; font: 700 22px var(--body-font); text-decoration: none; }
+.nb-navcta, .nb-btn {
+  display: inline-flex; align-items: center; min-height: 48px; padding: 0 22px; border-radius: 999px;
+  background: var(--fg); color: var(--bg) !important; font: 600 16px var(--font-ui); text-decoration: none;
+}
+.nb-navcta { min-height: 44px; padding: 0 16px; font-size: 15px; }
+.nb-hero { position: relative; padding: 96px 0 72px; max-width: 880px; }
+.nb-hero h1 { font-size: clamp(40px, 6.4vw, 78px); line-height: 1.04; letter-spacing: -0.02em; font-weight: 700; }
+.nb-circle { position: relative; white-space: nowrap; }
+.nb-circle::after {
+  content: ""; position: absolute; inset: -6px -14px -4px -12px; border: 3px solid var(--pencil); border-radius: 50% 46% 52% 44%;
+  rotate: -3deg; opacity: 0.85;
+}
+.nb-sub { max-width: 56ch; margin: 28px 0 0; font-size: 21px; line-height: 1.55; color: var(--muted); }
+.nb-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 20px; margin-top: 32px; }
+.nb-link { display: inline-flex; align-items: center; min-height: 44px; font: 500 17px var(--font-ui); }
+.nb-facts { margin: 22px 0 0; font: 500 16px var(--font-ui); color: var(--muted); }
+.nb-margin { position: absolute; left: -12px; top: 64px; margin: 0; font: 600 26px var(--font-caveat), cursive; color: var(--pencil); rotate: -6deg; }
+.nb-index { padding: 48px 0; max-width: 760px; }
+.nb-index h2, .nb-qa h2 { font-size: 34px; margin-bottom: 24px; }
+.nb-unit { margin-bottom: 34px; }
+.nb-unit h3 { font-size: 22px; line-height: 34px; }
+.nb-num { font: 600 16px var(--font-ui); color: var(--pencil); margin-right: 8px; }
+.nb-unit ol { margin: 0; padding: 0; list-style: none; }
+.nb-unit li a { display: flex; gap: 10px; align-items: baseline; line-height: 34px; font-size: 18px; text-decoration: none; }
+.nb-unit li a:hover span:first-child { text-decoration: underline; }
+.nb-dots { flex: 1; border-bottom: 2px dotted #b9b2a6; translate: 0 -6px; }
+.nb-unit li a span:last-child { font: 500 16px var(--font-ui); color: var(--muted); white-space: nowrap; flex: none; }
+.nb-try { position: relative; padding: 48px 0; max-width: 640px; }
+.nb-try .nb-margin { top: 8px; }
+.nb-sq { padding: 28px; background: #fff; box-shadow: 0 1px 0 #e5ded2, 0 18px 40px -20px rgb(60 40 20 / 0.3); rotate: -0.6deg; }
+.nb-sq .sq-label { font: 600 16px var(--font-ui); color: var(--pencil); }
+.nb-sq .sq-prompt { font-size: 24px; font-weight: 700; line-height: 1.25; }
+.nb-sq .sq-options button { border: 1.5px solid #ddd5c8; border-radius: 10px; background: var(--bg); font-size: 17px; }
+.nb-sq .sq-options button:not(:disabled):hover { border-color: var(--fg); }
+.nb-sq [data-state="right"] { border-color: #15803d !important; background: #ecfdf3 !important; }
+.nb-sq [data-state="wrong"] { border-color: var(--pencil) !important; background: #fef3f2 !important; }
+.nb-sq .sq-feedback { font-size: 17px; line-height: 1.5; }
+.nb-qa { padding: 48px 0; max-width: 760px; }
+.nb-faq div { padding: 18px 0; border-top: 1px solid #ddd5c8; }
+.nb-faq dt { font-size: 21px; font-weight: 700; }
+.nb-faq dd { margin: 6px 0 0; font-size: 18px; line-height: 1.55; color: var(--muted); }
+.nb-end { padding: 40px 0 80px; }
+
+/* Keep copy clear of the red margin rule (fixed at 16px from the left edge on narrow screens). */
+.lv-nb > section, .lv-nb > footer { box-sizing: border-box; }
+.lv-nb h1, .lv-nb h2, .lv-nb h3, .nb-faq dt { text-wrap: balance; }
+.nb-sub, .nb-faq dd, .sq-prompt { text-wrap: pretty; }
+@media (max-width: 900px) {
+  .lv-nb > section, .lv-nb > footer { padding-left: 16px; }
+  .nb-hero { padding-top: 64px; }
+  /* Margin notes move into the flow so they never sit on the rule or off the screen edge. */
+  .nb-margin, .nb-try .nb-margin { position: static; display: block; margin: 0 0 12px; font-size: 24px; rotate: -3deg; transform-origin: 0 50%; }
+  .nb-try { padding-top: 40px; }
+}
+@media (max-width: 760px) {
+  .nb-hero { padding-top: 48px; padding-bottom: 48px; }
+  .nb-actions { gap: 8px 20px; margin-top: 28px; }
+  .nb-index { padding: 40px 0; }
+  .nb-unit li a { align-items: center; min-height: 44px; line-height: 1.35; }
+  .nb-dots { translate: none; }
+  .nb-sq { padding: 24px; }
+  .nb-qa { padding: 40px 0; }
+  .nb-end { padding: 32px 0 64px; }
+}

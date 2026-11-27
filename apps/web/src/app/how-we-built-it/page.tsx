@@ -13,7 +13,7 @@ const PARTS: { part: string; student: string | null; ai: string }[] = [
   { part: "Research and event rules", student: null, ai: "Claude Code ran research passes and drafted the plan." },
   { part: "Lesson text and questions", student: null, ai: "—" },
   { part: "Learning engine (mastery, review, practice)", student: null, ai: "Written with Claude Code, with automated tests." },
-  { part: "Word planet renderer (Rust/WebAssembly)", student: null, ai: "—" },
+  { part: "Word planet renderer (Rust/WebAssembly), no longer on the home page", student: null, ai: "—" },
   { part: "Site code and design", student: null, ai: "Built with Claude Code." },
   { part: "Design review", student: null, ai: "AI role-play (not real judges): Haiku agents acted as five reviewers." },
 ];
@@ -166,12 +166,18 @@ export default function HowWeBuiltItPage() {
         </table>
       </div>
 
-      <h2>Where the word planet came from</h2>
+      <h2>Where the home page hero came from</h2>
       <p>
-        The hero planet is ours, not a downloaded model. It is a small Rust program, compiled to WebAssembly, that takes the
-        words from our lessons, splits them into tokens the way a language model reads them, and draws them on a turning sphere
-        with WebGL2. A still image loads first, so the page is fast. The live planet starts only on devices that can draw it
-        smoothly, and never when reduced motion is on. The renderer is in <code>apps/web/planet/src/lib.rs</code>.
+        The home page hero is an animated particle field, not a photograph. It is the React Bits Particles background by
+        David Haz, licensed MIT with the Commons Clause. It draws soft-white and warm gold dots joined by faint lines, in raw
+        WebGL2 with no extra packages. It drifts slowly and shifts a little with the cursor. With reduced motion on it shows
+        one still frame, and it pauses when it is scrolled out of view. Before it, the hero was a NASA photograph of the
+        Milky Way taken from the International Space Station; that photo is no longer on the home page and stays in the repo
+        for the design lab. Earlier still, the hero was a word planet of our own: a small Rust
+        program, compiled to WebAssembly, that took the words from our lessons, split them into tokens the way a language
+        model reads them, and drew them on a turning sphere with WebGL2. The live planet started only on devices that could
+        draw it smoothly, and never when reduced motion was on. It has been replaced on the home page, but the renderer is
+        still in <code>apps/web/planet/src/lib.rs</code>.
       </p>
 
       <h2>Is the content checked?</h2>

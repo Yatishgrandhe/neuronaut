@@ -1,5 +1,7 @@
 # Build prompt: Neuronaut home rebuild + compliance pages (TSA Webmaster), v2
 
+> **Update (Nov 26, 2026):** the home page sections below (Gate 2, including the word-planet hero) describe the build as of v2. The current home page hero is an animated 3D particle field, the React Bits "Particles" background, which replaced an earlier Milky Way photo version the same day. Do not reuse Gate 2 as written; the compliance pages in Gate 1 still apply.
+
 Paste everything below the line into a fresh coding session opened at `/Users/yatishgrandhe/webmaster`.
 
 ---

@@ -1,0 +1,46 @@
+/* Home page lab: five scoped directions. Each variant declares its own tokens on its root. */
+.lab { padding-bottom: calc(120px + env(safe-area-inset-bottom)); }
+.lv { min-height: 100vh; background: var(--bg); color: var(--fg); font-family: var(--body-font); }
+.lv a { color: inherit; }
+.lv h1, .lv h2, .lv h3 { margin: 0; color: inherit; font-family: inherit; }
+.lv :focus-visible { outline: 3px solid var(--focus, currentColor); outline-offset: 3px; }
+.lv .wrapish, .lv > section, .lv > header, .lv > footer, .lv-sk .sk-body { width: min(1160px, 100% - 40px); margin-inline: auto; }
+.lv > header { display: flex; align-items: center; gap: 24px; padding: 20px 0; }
+.lv > header nav { display: flex; gap: 22px; margin-left: auto; }
+.lv > header nav a { text-decoration: none; }
+@media (max-width: 760px) { .lv > header nav { display: none; } .lv > header > a:last-child { margin-left: auto; } }
+
+/* Lab bar */
+.lab-bar {
+  position: fixed; left: 50%; bottom: calc(16px + env(safe-area-inset-bottom)); translate: -50% 0; z-index: 50; display: grid; gap: 8px;
+  width: min(760px, calc(100vw - 24px)); padding: 10px 12px; border-radius: 16px;
+  background: #1d1d1f; color: #f4f1ea; font: 500 14px var(--font-ui); box-shadow: 0 14px 40px -10px rgb(0 0 0 / 0.5);
+}
+.lab-note { margin: 0 4px; color: #cfc9be; }
+.lab-note strong { color: #fff; }
+.lab-bar ol { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.lab-bar a { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 0 12px; border-radius: 10px; color: #f4f1ea; text-decoration: none; }
+.lab-bar a:hover { background: rgb(255 255 255 / 0.1); }
+.lab-bar a[aria-current="page"] { background: #f4f1ea; color: #1d1d1f; }
+.lab-bar a:focus-visible { outline: 2px solid #fdba74; outline-offset: 2px; }
+.lab-bar kbd { font: 600 12px var(--font-ui); opacity: 0.6; }
+/* Phones: one scrollable row, no note, roughly 56px tall, 44px targets. */
+@media (max-width: 639px) {
+  .lab { padding-bottom: calc(88px + env(safe-area-inset-bottom)); }
+  .lab-bar { bottom: calc(8px + env(safe-area-inset-bottom)); width: calc(100vw - 16px); padding: 6px; border-radius: 14px; grid-template-columns: minmax(0, 1fr); }
+  .lab-note { display: none; }
+  .lab-bar ol { flex-wrap: nowrap; min-width: 0; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; }
+  .lab-bar ol::-webkit-scrollbar { display: none; }
+  .lab-bar li { flex: none; }
+  .lab-bar a { min-height: 44px; padding: 0 10px; white-space: nowrap; }
+}
+
+/* Sample question (shared structure) */
+.sq { display: grid; gap: 14px; }
+.sq-label, .sq-prompt, .sq-feedback { margin: 0; }
+.sq-options { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.sq-options button { width: 100%; min-height: 48px; padding: 10px 16px; text-align: left; cursor: pointer; font: inherit; color: inherit; }
+.sq-options button:disabled { cursor: default; }
+.sq-again { border: 0; background: none; padding: 0; font: inherit; text-decoration: underline; cursor: pointer; color: inherit; }
+.sq-feedback:empty { display: none; }
+

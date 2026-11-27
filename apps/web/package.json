@@ -15,12 +15,15 @@
     "@langchain/anthropic": "^1.6.5",
     "@langchain/core": "^1.4.2",
     "@neuronaut/core": "workspace:*",
+    "@number-flow/react": "^0.6.2",
+    "cmdk": "^1.1.1",
     "framer-motion": "^14.14.0",
     "lucide-react": "^1.77.0",
     "next": "16.4.6",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "server-only": "^0.0.1",
+    "sonner": "^2.0.8",
     "zod": "^4.6.7"
   },
   "devDependencies": {

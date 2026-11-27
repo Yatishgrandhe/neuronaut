@@ -1,5 +1,7 @@
 # MiroFish grade: Neuronaut + Software Dev entry (2026-11-26)
 
+> **Update (Nov 26, 2026):** the word-planet hero recommended in rounds 1 to 8 is no longer on the home page. The home page hero is now an animated 3D particle field, the React Bits "Particles" background, which replaced an earlier Milky Way photo version the same day. The planet renderer code is still in `apps/web/planet/`. The rounds below are kept as written.
+
 Method: the mirofish-simulation skill run locally. One shared scenario seed, five Haiku personas with conflicting interests, three rounds. Each persona kept its memory between rounds and saw the others' critiques.
 
 ## Scores

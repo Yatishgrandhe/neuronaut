@@ -1,0 +1,73 @@
+/* ---------- 2. Tokens ---------- */
+.lv-tk {
+  --bg: #0f0f0e; --fg: #e9e6df; --muted: #9a958b; --line: #2a2926; --amber: #f5a524; --focus: #f5a524;
+  --body-font: var(--lab-mono), ui-monospace, monospace;
+  font-size: 15px;
+}
+.tk-mark { font-weight: 700; text-decoration: none; }
+.tk-mark::before { content: "● "; color: var(--amber); }
+.tk-navcta, .tk-btn { display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; border: 1.5px solid var(--amber); color: var(--amber) !important; text-decoration: none; font-weight: 700; }
+.tk-btn { background: var(--amber); color: #111 !important; min-height: 52px; padding: 0 24px; }
+.tk-hero { padding: 80px 0 64px; }
+.tk-prompt { margin: 0 0 28px; color: var(--muted); }
+.tk-prompt span { color: var(--amber); }
+.tk-hero h1 { display: flex; flex-wrap: wrap; gap: 10px 8px; max-width: 1040px; font: 700 clamp(30px, 4.6vw, 58px) / 1.1 var(--body-font); letter-spacing: -0.03em; }
+.tk-tok { position: relative; display: inline-grid; padding: 18px 10px 8px; border: 1px solid var(--line); border-radius: 8px; background: #181816; }
+.tk-tok[data-hot] { border-color: var(--amber); color: var(--amber); }
+.tk-tok { min-width: 48px; }
+.tk-id { position: absolute; top: 5px; left: 10px; font-size: 11px; font-weight: 400; letter-spacing: 0; color: var(--muted); }
+.tk-sub { max-width: 62ch; margin: 32px 0 0; font-size: 17px; line-height: 1.6; color: var(--muted); }
+.tk-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 22px; margin-top: 28px; }
+.tk-link::before { content: "$ "; color: var(--amber); }
+.tk-caption { max-width: 62ch; margin: 28px 0 0; font-size: 13px; line-height: 1.6; color: var(--muted); }
+.tk-units { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); border-top: 1px solid var(--line); }
+.tk-units article { padding: 32px 28px 32px 0; border-bottom: 1px solid var(--line); }
+.tk-path { margin: 0 0 8px; color: var(--amber); }
+.tk-units h2 { font-size: 22px; }
+.tk-units article > p:not(.tk-path) { color: var(--muted); line-height: 1.6; }
+.tk-units ul { margin: 18px 0 0; padding: 0; list-style: none; }
+.tk-units li { display: flex; justify-content: space-between; gap: 12px; padding: 7px 0; border-top: 1px dashed var(--line); }
+.tk-units li span { color: var(--muted); }
+.tk-units li a { text-decoration: none; }
+.tk-units li a:hover { color: var(--amber); }
+.tk-try { padding: 64px 0; max-width: 720px; }
+.tk-sq .sq-label { color: var(--amber); }
+.tk-sq .sq-label::before { content: "// "; }
+.tk-sq .sq-prompt { font-size: 22px; font-weight: 700; }
+.tk-sq .sq-options button { border: 1px solid var(--line); background: #181816; border-radius: 6px; }
+.tk-sq .sq-options button:not(:disabled):hover { border-color: var(--amber); }
+.tk-sq [data-state="right"] { border-color: #4ade80 !important; color: #4ade80; }
+.tk-sq [data-state="wrong"] { border-color: #f87171 !important; color: #f87171; }
+.tk-sq .sq-feedback { line-height: 1.6; color: var(--muted); }
+.tk-qa { padding: 24px 0 80px; }
+.tk-faq div { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 20px; padding: 20px 0; border-top: 1px solid var(--line); }
+.tk-faq dt { font-weight: 700; }
+.tk-faq dd { margin: 0; color: var(--muted); line-height: 1.6; }
+@media (max-width: 640px) { .tk-faq div { grid-template-columns: 1fr; gap: 6px; } }
+
+/* Sizing pass: tap targets, focus, caption size */
+.tk-mark, .tk-link { display: inline-flex; align-items: center; min-height: 44px; }
+.tk-caption { font-size: 15px; }
+.lv-tk a:focus-visible, .lv-tk button:focus-visible, .lv-tk summary:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+.tk-units li { align-items: center; min-height: 44px; }
+.tk-units li a { display: inline-flex; align-items: center; min-height: 44px; }
+
+/* Phones: scale the token headline and chips so the sentence and Start button sit in the first screen */
+@media (max-width: 640px) {
+  .lv-tk .tk-hero { padding: 40px 0 40px; }
+  .tk-prompt { margin-bottom: 20px; font-size: 14px; }
+  .lv-tk .tk-hero h1 { font-size: 22px; gap: 8px 6px; }
+  .tk-tok { padding: 14px 6px 4px; border-radius: 6px; min-width: 44px; }
+  .tk-id { top: 3px; left: 6px; font-size: 11px; }
+  .tk-sub { margin-top: 22px; font-size: 16px; }
+  .tk-actions { margin-top: 22px; gap: 16px 22px; }
+  .tk-caption { margin-top: 22px; }
+}
+
+/* Tablets and small laptops: keep the hero above the fold at 800px tall */
+@media (min-width: 641px) and (max-height: 900px) {
+  .tk-hero { padding: 56px 0 40px; }
+  .lv-tk .tk-hero h1 { font-size: clamp(30px, 4vw, 48px); }
+  .tk-sub { margin-top: 24px; }
+  .tk-actions { margin-top: 22px; }
+}

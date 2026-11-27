@@ -46,7 +46,8 @@ The engine has 44 tests. They cover the Bayes formula against hand-worked number
 | `packages/core` | Pure TypeScript, no browser code. Lessons (`content.ts`), answer checking (`check.ts`), XP, streaks, badges and the Leitner review scheduler (`engine.ts`), the mastery model (`mastery.ts`), and demo data built by running the real engine (`sample.ts`). |
 | `apps/web` | Next.js 16 site. Progress is saved in the browser (localStorage); there are no accounts. |
 | `apps/web/src/lib/tutor.ts` | Ask Pip: BM25 search over the lesson text, then Claude Haiku 5.5 answers from the passages it finds. |
-| `apps/web/planet` | The hero "word planet": Rust compiled to WebAssembly and drawn with WebGL2. |
+| `apps/web/src/components/home-sky` | The home page hero: an animated 3D particle field, the React Bits Particles background by David Haz (MIT + Commons Clause), drawn with raw WebGL2 and no extra packages. Reduced motion shows one still frame. |
+| `apps/web/planet` | The earlier "word planet" hero: Rust compiled to WebAssembly and drawn with WebGL2. It no longer appears on the home page; the code is kept in the repo. |
 
 ## The learning engine in one paragraph
 
